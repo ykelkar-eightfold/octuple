@@ -23,6 +23,11 @@ export interface DropdownProps {
    */
   ariaRef?: React.MutableRefObject<HTMLElement>;
   /**
+   * The child renderer.
+   * @deprecated Wrap your element instead, e.g. `<Dropdown><MyElement /></Dropdown>`.
+   */
+  children?: React.ReactNode;
+  /**
    * Class names of the main wrapper
    */
   classNames?: string;
@@ -83,6 +88,11 @@ export interface DropdownProps {
    * The dropdown content
    */
   overlay?: React.ReactElement;
+  /**
+   * The tabindex of the overlay wrapper
+   * @default 0
+   */
+  overlayTabIndex?: number;
   /**
    * Placement of the menu
    * @default bottom-start

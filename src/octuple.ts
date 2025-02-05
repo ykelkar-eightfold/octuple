@@ -40,6 +40,7 @@ import {
   autoScrollApi,
   autoScrollApiType,
   Carousel,
+  CarouselSize,
   Slide,
   VisibilityContext,
 } from './components/Carousel';
@@ -47,6 +48,7 @@ import {
 import {
   CheckBox,
   CheckBoxGroup,
+  CheckboxValueType,
   LabelPosition,
   LabelAlign,
   SelectorSize,
@@ -56,10 +58,27 @@ import {
 
 import {
   ConfigProvider,
+  CustomFont,
   OcThemeName,
   Shape,
   Size,
+  ThemeOptions,
+  useConfig,
 } from './components/ConfigProvider';
+
+import { Drawer, DrawerVariant, useDrawer } from './components/Drawer';
+
+import GradientContext, {
+  Gradient,
+} from './components/ConfigProvider/GradientContext';
+
+import ParentComponentsContext, {
+  ParentComponentsContextProvider,
+} from './components/ConfigProvider/ParentComponentsContext';
+
+import ThemeContext, {
+  ThemeContextProvider,
+} from './components/ConfigProvider/ThemeContext';
 
 import Cropper from './components/Upload/Cropper';
 
@@ -71,6 +90,11 @@ import {
   DatePickerSize,
   RangePickerProps,
 } from './components/DateTimePicker/DatePicker';
+
+import {
+  EventValue,
+  RangeValue,
+} from './components/DateTimePicker/Internal/OcPicker.types';
 
 import { Dialog, DialogHelper, DialogSize } from './components/Dialog';
 
@@ -88,7 +112,17 @@ import Grid, { Col, Row } from './components/Grid';
 
 import { Icon, IconName, IconSize } from './components/Icon';
 
-import { InlineSvgProps, InlineSvg } from './components/InlineSvg';
+import {
+  CopilotFullLogoLarge,
+  CopilotFullLogoMedium,
+  CopilotFullLogoSmall,
+  CopilotIconGradient,
+  CopilotIconLargeSolidColor,
+  CopilotIconMediumSolidColor,
+  CopilotIconSmallSolidColor,
+  InlineSvgProps,
+  InlineSvg,
+} from './components/InlineSvg';
 
 import { Label, LabelSize } from './components/Label';
 
@@ -145,6 +179,7 @@ import {
   SearchBox,
   TextArea,
   TextInput,
+  TextInputIconAlign,
   TextInputShape,
   TextInputSize,
   TextInputTheme,
@@ -161,7 +196,12 @@ import {
   SkeletonAnimation,
 } from './components/Skeleton';
 
-import { Select, SelectShape, SelectSize } from './components/Select';
+import {
+  Select,
+  SelectOption,
+  SelectShape,
+  SelectSize,
+} from './components/Select';
 
 import {
   BelowLargeImg,
@@ -212,6 +252,7 @@ import {
   StatThemeName,
   StatValidationStatus,
   Tabs,
+  TabIconAlign,
   Tab,
   TabSize,
   TabVariant,
@@ -236,6 +277,16 @@ import {
   TooltipSize,
   TooltipTouchInteraction,
 } from './components/Tooltip';
+
+import { Truncate } from './components/Truncate';
+
+import { useTruncate } from './hooks/useTruncate';
+
+import {
+  hasHorizontalOverflow,
+  hasOverflow,
+  hasVerticalOverflow,
+} from './shared/utilities';
 
 import { Loader, LoaderSize } from './components/Loader';
 
@@ -330,15 +381,25 @@ export {
   CardSize,
   CardType,
   Carousel,
+  CarouselSize,
   CascadingMenu,
   CheckBox,
   CheckBoxGroup,
+  CheckboxValueType,
   Col,
   ColumnGroupType,
   ColumnType,
   ColumnsType,
   ConfigProvider,
+  CopilotFullLogoLarge,
+  CopilotFullLogoMedium,
+  CopilotFullLogoSmall,
+  CopilotIconGradient,
+  CopilotIconLargeSolidColor,
+  CopilotIconMediumSolidColor,
+  CopilotIconSmallSolidColor,
   Cropper,
+  CustomFont,
   DatePicker,
   DatePickerProps,
   DatePickerShape,
@@ -347,10 +408,13 @@ export {
   Dialog,
   DialogHelper,
   DialogSize,
+  Drawer,
+  DrawerVariant,
   Dropdown,
   DropdownRef,
   Empty,
   EmptyMode,
+  EventValue,
   ExceedLargeImg,
   ExceedMediumImg,
   ExceedSmallImg,
@@ -365,7 +429,12 @@ export {
   Form,
   FormInstance,
   Gestures,
+  Gradient,
+  GradientContext,
   Grid,
+  hasHorizontalOverflow,
+  hasOverflow,
+  hasVerticalOverflow,
   Icon,
   IconName,
   IconSize,
@@ -420,6 +489,8 @@ export {
   PanelHeader,
   PanelPlacement,
   PanelSize,
+  ParentComponentsContext,
+  ParentComponentsContextProvider,
   PersistentBar,
   PersistentBarType,
   Pill,
@@ -438,12 +509,14 @@ export {
   RadioButton,
   RadioGroup,
   RangePickerProps,
+  RangeValue,
   ResizeObserver,
   Row,
   Skeleton,
   SkeletonVariant,
   SkeletonAnimation,
   Select,
+  SelectOption,
   SelectShape,
   SelectSize,
   SelectorSize,
@@ -489,21 +562,27 @@ export {
   TableProps,
   TableRowSelection,
   TableSize,
+  TabIconAlign,
   Tabs,
   TabSize,
   Tab,
   TabVariant,
   TextArea,
   TextInput,
+  TextInputIconAlign,
   TextInputShape,
   TextInputSize,
   TextInputTheme,
   TextInputWidth,
+  ThemeContext,
+  ThemeContextProvider,
+  ThemeOptions,
   TimePicker,
   Tooltip,
   TooltipTheme,
   TooltipSize,
   TooltipTouchInteraction,
+  Truncate,
   TwoStateButton,
   Upload,
   UploadFile,
@@ -515,11 +594,14 @@ export {
   UpskillingSmallImg,
   useBoolean,
   useCanvasDirection,
+  useConfig,
+  useDrawer,
   useFocusTrap,
   useGestures,
   useMatchMedia,
   useMaxVisibleSections,
   useOnClickOutside,
   useScrollLock,
+  useTruncate,
   VisibilityContext,
 };

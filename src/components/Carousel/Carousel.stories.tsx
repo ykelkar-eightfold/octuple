@@ -1,11 +1,19 @@
 import React, { useRef, useState } from 'react';
 import { Stories } from '@storybook/addon-docs';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import { autoScrollApiType, Carousel, Slide, VisibilityContext } from './';
+import {
+  autoScrollApiType,
+  Carousel,
+  CarouselSize,
+  Slide,
+  VisibilityContext,
+} from './';
 import { Button, ButtonShape, ButtonSize, ButtonVariant } from '../Button';
 import { Card } from '../Card';
 import { IconName } from '../Icon';
+import { Tooltip, TooltipSize, TooltipTheme } from '../Tooltip';
 import { useCanvasDirection } from '../../hooks/useCanvasDirection';
+import { useTruncate } from '../../hooks/useTruncate';
 
 export default {
   title: 'Carousel',
@@ -37,7 +45,29 @@ export default {
       ),
     },
   },
-  argTypes: {},
+  argTypes: {
+    size: {
+      options: [CarouselSize.Large, CarouselSize.Medium, CarouselSize.Small],
+      control: { type: 'radio' },
+    },
+    theme: {
+      options: [
+        'red',
+        'redOrange',
+        'orange',
+        'yellow',
+        'yellowGreen',
+        'green',
+        'blueGreen',
+        'blue',
+        'blueViolet',
+        'violet',
+        'violetRed',
+        'grey',
+      ],
+      control: 'select',
+    },
+  },
 } as ComponentMeta<typeof Carousel>;
 
 const Slide_Story: ComponentStory<typeof Carousel> = (args) => (
@@ -86,10 +116,7 @@ interface SampleItem {
   key: string;
 }
 
-const sampleList: SampleItem[] = [
-  1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22,
-  23, 24,
-].map((i) => ({
+const sampleList: SampleItem[] = [1, 2, 3, 4, 5, 6, 7, 8].map((i) => ({
   name: `Item ${i}`,
   key: `key-${i}`,
 }));
@@ -227,10 +254,57 @@ const Scroll_Custom_Buttons_Story: ComponentStory<typeof Carousel> = (args) => {
   );
 };
 
+const CarouselCardWithTooltip = ({
+  children,
+  lineClamp,
+}: {
+  children?: React.ReactNode;
+  lineClamp?: number;
+}) => {
+  const { TruncateText, isTextTruncated } = useTruncate({ lineClamp });
+  return (
+    <Card
+      bordered
+      height={344}
+      tabIndex={0}
+      width={280}
+      style={{
+        alignItems: 'center',
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
+        width: '100%',
+      }}
+    >
+      <div
+        style={{
+          alignItems: 'center',
+          display: 'flex',
+          flexDirection: 'column',
+          flexGrow: 1,
+          justifyContent: 'center',
+        }}
+      >
+        <Tooltip
+          content={children}
+          disabled={!isTextTruncated}
+          portal
+          size={TooltipSize.Medium}
+          theme={TooltipTheme.dark}
+        >
+          <TruncateText>{children}</TruncateText>
+        </Tooltip>
+      </div>
+      <span>Line Clamp: {lineClamp}</span>
+    </Card>
+  );
+};
+
 export const Slider = Slide_Story.bind({});
 export const Scroller = Scroll_Story.bind({});
 export const Scroller_Single = Scroll_Story.bind({});
 export const Scroller_Custom_Buttons = Scroll_Custom_Buttons_Story.bind({});
+export const Scroller_With_Tooltips = Scroll_Story.bind({});
 
 // Storybook 6.5 using Webpack >= 5.76.0 automatically alphabetizes exports,
 // this line ensures they are exported in the desired order.
@@ -240,12 +314,22 @@ export const __namedExportsOrder = [
   'Scroller',
   'Scroller_Single',
   'Scroller_Custom_Buttons',
+  'Scroller_With_Tooltips',
 ];
 
 const carouselArgs: Object = {
   classNames: 'my-carousel',
+  configContextProps: {
+    noGradientContext: false,
+    noThemeContext: false,
+  },
+  gradient: false,
+  theme: '',
+  themeContainerId: 'my-carousel-theme-container',
   controls: true,
   'data-test-id': 'myCarouselTestyId',
+  overlayControls: true,
+  size: CarouselSize.Large,
 };
 
 Slider.args = {
@@ -339,5 +423,22 @@ Scroller_Custom_Buttons.args = {
   id: 'myCarouselScrollId',
   single: true,
   style: { background: 'transparent' },
+  type: 'scroll',
+};
+
+Scroller_With_Tooltips.args = {
+  ...carouselArgs,
+  carouselScrollMenuProps: {
+    children: sampleList.map((item: SampleItem, index: number) => (
+      <CarouselCardWithTooltip key={item.key} lineClamp={index + 1}>
+        Try dragging on me in a mobile view! When inside a Carousel, Tooltips
+        will set preventTouchMoveDefault to {'false'} by default to enable touch
+        scrolling.
+      </CarouselCardWithTooltip>
+    )),
+    containerPadding: 8,
+    gap: 24,
+  },
+  id: 'myCarouselScrollId',
   type: 'scroll',
 };

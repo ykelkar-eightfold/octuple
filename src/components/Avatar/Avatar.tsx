@@ -1,3 +1,5 @@
+'use client';
+
 import React, { FC, Ref, useEffect, useMemo, useRef, useState } from 'react';
 import {
   AvatarFallbackProps,
@@ -254,6 +256,7 @@ const AvatarFallback: FC<AvatarFallbackProps> = React.forwardRef(
       randomiseTheme,
       style,
       theme,
+      tabIndex = 0,
     },
     ref: Ref<HTMLDivElement>
   ) => {
@@ -294,7 +297,7 @@ const AvatarFallback: FC<AvatarFallbackProps> = React.forwardRef(
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
         style={style}
-        tabIndex={0}
+        tabIndex={tabIndex}
       >
         {children}
       </div>
@@ -314,6 +317,7 @@ const AvatarIcon: FC<AvatarIconProps> = React.forwardRef(
       onMouseEnter,
       onMouseLeave,
       style,
+      tabIndex
     },
     ref: Ref<HTMLDivElement>
   ) => {
@@ -331,7 +335,7 @@ const AvatarIcon: FC<AvatarIconProps> = React.forwardRef(
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
         style={style}
-        tabIndex={0}
+        tabIndex={tabIndex}
       >
         <Icon size={fontSize} {...iconProps} />
         {children}
@@ -364,6 +368,7 @@ export const Avatar: FC<AvatarProps> = React.forwardRef(
       theme,
       tooltipProps = undefined,
       type = 'square',
+      tabIndex = 0,
     },
     ref: Ref<HTMLDivElement>
   ) => {
@@ -542,6 +547,7 @@ export const Avatar: FC<AvatarProps> = React.forwardRef(
             onMouseLeave={onMouseLeave}
             ref={ref}
             style={{ ...wrapperContainerStyle, ...(calculatedOutline ?? {}) }}
+            tabIndex={tabIndex}
           >
             <AvatarStatusItems
               outline={calculatedOutline}
@@ -586,6 +592,7 @@ export const Avatar: FC<AvatarProps> = React.forwardRef(
           ref={ref}
           style={{ ...wrapperContainerStyle, ...(calculatedOutline ?? {}) }}
           theme={theme}
+          tabIndex={tabIndex}
         >
           {children}
           <AvatarStatusItems

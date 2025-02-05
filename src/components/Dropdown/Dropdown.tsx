@@ -1,3 +1,5 @@
+'use client';
+
 import React, {
   cloneElement,
   FC,
@@ -30,6 +32,7 @@ import { useMergedState } from '../../hooks/useMergedState';
 import { useOnClickOutside } from '../../hooks/useOnClickOutside';
 import { usePreviousState } from '../../hooks/usePreviousState';
 import {
+  canUseDocElement,
   ConditionalWrapper,
   eventKeys,
   focusable,
@@ -72,6 +75,7 @@ export const Dropdown: FC<DropdownProps> = React.memo(
         trigger = 'click',
         visible,
         width,
+        overlayTabIndex = 0,
       },
       ref: React.ForwardedRef<DropdownRef>
     ) => {
@@ -82,7 +86,11 @@ export const Dropdown: FC<DropdownProps> = React.memo(
       const [closing, setClosing] = useState<boolean>(false);
       const previouslyClosing: boolean = usePreviousState(closing);
 
+      // TODO: Upgrade to React 18 and use the new `useId` hook.
+      // This way the id will match on the server and client.
+      // For now, pass an id via props if using SSR.
       const dropdownId: string = uniqueId('dropdown-');
+
       const [dropdownReferenceId, setReferenceElementId] = useState<string>(
         `${dropdownId}reference`
       );
@@ -157,8 +165,10 @@ export const Dropdown: FC<DropdownProps> = React.memo(
       useOnClickOutside(
         refs.floating,
         (e) => {
-          const referenceElement: HTMLElement =
-            document.getElementById(dropdownReferenceId);
+          let referenceElement: HTMLElement;
+          if (canUseDocElement()) {
+            referenceElement = document.getElementById(dropdownReferenceId);
+          }
           if (closeOnOutsideClick && closeOnReferenceClick && !mergedVisible) {
             toggle(false)(e);
           }
@@ -234,6 +244,7 @@ export const Dropdown: FC<DropdownProps> = React.memo(
         referenceOnKeydown?.(event);
         if (
           (event?.key === eventKeys.ENTER || event?.key === eventKeys.SPACE) &&
+          canUseDocElement() &&
           document.activeElement === event.target
         ) {
           timeout && clearTimeout(timeout);
@@ -272,7 +283,6 @@ export const Dropdown: FC<DropdownProps> = React.memo(
       };
 
       const handleFloatingKeyDown = (event: React.KeyboardEvent): void => {
-        event.stopPropagation();
         if (event?.key === eventKeys.ESCAPE) {
           toggle(false)(event);
         }
@@ -311,9 +321,12 @@ export const Dropdown: FC<DropdownProps> = React.memo(
         }
         // If there's an ariaRef, apply the a11y attributes to it, rather than the immediate child.
         if (ariaRef?.current) {
-          ariaRef.current.setAttribute('aria-controls', dropdownId);
           ariaRef.current.setAttribute('aria-expanded', `${mergedVisible}`);
           ariaRef.current.setAttribute('aria-haspopup', 'true');
+
+          if (!ariaRef.current.hasAttribute('aria-controls')) {
+            ariaRef.current.setAttribute('aria-controls', dropdownId);
+          }
 
           if (!ariaRef.current.hasAttribute('role')) {
             ariaRef.current.setAttribute('role', 'button');
@@ -380,7 +393,7 @@ export const Dropdown: FC<DropdownProps> = React.memo(
               ref={refs.setFloating}
               style={dropdownStyles}
               className={dropdownClasses}
-              tabIndex={0}
+              tabIndex={overlayTabIndex}
               onClick={
                 closeOnDropdownClick ? toggle(false, showDropdown) : null
               }
@@ -410,7 +423,9 @@ export const Dropdown: FC<DropdownProps> = React.memo(
           {getReference()}
           <ConditionalWrapper
             condition={portal}
-            wrapper={(children) => <FloatingPortal>{children}</FloatingPortal>}
+            wrapper={(children) => (
+              <FloatingPortal preserveTabOrder>{children}</FloatingPortal>
+            )}
           >
             {getDropdown()}
           </ConditionalWrapper>

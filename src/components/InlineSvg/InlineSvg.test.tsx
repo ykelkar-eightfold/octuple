@@ -30,20 +30,26 @@ describe('InlineSvg', () => {
 
   test('renders an error icon when the SVG image fails to load', async () => {
     const errorUrl = 'https://example.com/broken.svg';
+    // Mock fetch to simulate a failed request
+    global.fetch = jest.fn(() =>
+      Promise.reject(new Error('Failed to fetch'))
+    ) as jest.Mock;
+
     const { container } = render(
       <InlineSvg url={errorUrl} width={width} height={height} />
     );
+
+    // Wait for error state to be set and component to re-render
     await waitFor(() => {
-      expect(
-        container.querySelector('.svg-display-error-icon')
-      ).toBeInTheDocument();
-    });
+      expect(container.querySelector('.svg-display-error-icon')).toBeInTheDocument();
+    }, { timeout: 3000 });
   });
 
   test('Should call fetchSvg only once', async () => {
     global.fetch = jest.fn(() =>
       Promise.resolve({ text: () => '<svg>Mock SVG</svg>' })
     ) as jest.Mock;
+
     const { rerender } = render(<InlineSvg url="mock-url" />);
     rerender(<InlineSvg url="mock-url" />);
     rerender(<InlineSvg url="mock-url" />);
@@ -57,6 +63,7 @@ describe('InlineSvg', () => {
     global.fetch = jest.fn(() =>
       Promise.resolve({ text: () => '<svg>Mock SVG</svg>' })
     ) as jest.Mock;
+
     const { rerender } = render(<InlineSvg url="mock-url" />);
     rerender(<InlineSvg url="mock-url" />);
     rerender(<InlineSvg url="mock-url-diff" />);

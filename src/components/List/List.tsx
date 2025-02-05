@@ -1,13 +1,14 @@
+'use client';
+
 import React, { Key, useEffect, useRef, useState } from 'react';
 import { ListProps } from './List.types';
+import { ExternalListItem } from './ListItem';
 import { useCanvasDirection } from '../../hooks/useCanvasDirection';
 import {
-  cloneElement,
   eventKeys,
   focusable,
   mergeClasses,
   SELECTORS,
-  uniqueId,
 } from '../../shared/utilities';
 
 import styles from './list.module.scss';
@@ -15,6 +16,7 @@ import styles from './list.module.scss';
 export const List = <T extends any>({
   additionalItem,
   disableArrowKeys = false,
+  disableKeys = false,
   items,
   footer,
   layout = 'vertical',
@@ -27,10 +29,12 @@ export const List = <T extends any>({
   itemClassNames,
   itemStyle,
   listClassNames,
+  listStyle,
   listType = 'ul',
   role,
   itemProps,
   getItem,
+  id,
   ...rest
 }: ListProps<T>) => {
   const htmlDir: string = useCanvasDirection();
@@ -58,7 +62,7 @@ export const List = <T extends any>({
     index: number,
     external: boolean = false
   ): void => {
-    if (disableArrowKeys) {
+    if (disableArrowKeys || disableKeys) {
       return;
     }
     const arrowDown: boolean = event?.key === eventKeys.ARROWDOWN;
@@ -67,6 +71,8 @@ export const List = <T extends any>({
     const arrowUp: boolean = event?.key === eventKeys.ARROWUP;
     const arrowDecrement: boolean = htmlDir === 'rtl' ? arrowRight : arrowLeft;
     const arrowIncrement: boolean = htmlDir === 'rtl' ? arrowLeft : arrowRight;
+    const end: boolean = event?.key === eventKeys.END;
+    const home: boolean = event?.key === eventKeys.HOME;
     if (
       ((arrowDown || arrowUp) && layout === 'vertical') ||
       ((arrowDecrement || arrowIncrement) && layout === 'horizontal')
@@ -118,6 +124,37 @@ export const List = <T extends any>({
         };
         const focusableElements: HTMLElement[] = getFocusableElements();
         focusableElements?.[0]?.focus();
+      }
+    }
+    if (end || home) {
+      const focusElement = (index: number) => {
+        event?.preventDefault();
+        setFocusIndex(index);
+        if (itemRefs.current[index]) {
+          const item: HTMLElement | null = external
+            ? itemRefs.current[index].parentElement
+            : itemRefs.current[index];
+          const getFocusableElements = (): HTMLElement[] => {
+            return [
+              ...(item.querySelectorAll(SELECTORS) as unknown as HTMLElement[]),
+            ].filter((el: HTMLElement) => focusable(el));
+          };
+          const focusableElements: HTMLElement[] = getFocusableElements();
+          const focusableElement: HTMLElement | null = focusableElements?.[0];
+          focusableElement?.focus();
+        }
+      };
+
+      if (end) {
+        if (renderAdditionalItem) {
+          focusElement(items.length);
+        } else {
+          focusElement(items.length - 1);
+        }
+      }
+
+      if (home) {
+        focusElement(0);
       }
     }
   };
@@ -185,23 +222,20 @@ export const List = <T extends any>({
     if (!node) {
       return null;
     }
-    const item = React.Children.only(node) as React.ReactElement<HTMLElement>;
-    const itemId: string = item.props.id
-      ? item.props.id
-      : uniqueId(`listItem${index}-`);
-    const referenceElement: HTMLElement | null =
-      document.getElementById(itemId);
-    itemRef(referenceElement);
-    itemRefs.current[index] = referenceElement;
-    return cloneElement(item, {
-      id: itemId,
-      ref: itemRef,
-      tabIndex: 0,
-      onKeyDown: (event: KeyboardEvent) => {
-        item.props.onkeydown?.(event);
-        handleItemKeyDown(event, index, true);
-      },
-    });
+    const item: React.ReactElement<
+      HTMLElement,
+      string | React.JSXElementConstructor<any>
+    > = React.Children.only(node) as React.ReactElement<HTMLElement>;
+    return (
+      <ExternalListItem
+        handleItemKeyDown={handleItemKeyDown}
+        id={item?.props?.id}
+        index={index}
+        item={item}
+        itemRefs={itemRefs}
+        itemRef={itemRef}
+      />
+    );
   };
 
   const getItems = (): React.ReactNode[] =>
@@ -219,13 +253,23 @@ export const List = <T extends any>({
     <div {...rest} className={classNames} style={style}>
       {getHeader()}
       {listType === 'ul' && (
-        <ul role={role} className={containerClasses}>
+        <ul
+          id={id}
+          role={role}
+          className={containerClasses}
+          style={{ ...listStyle }}
+        >
           {getItems()}
           {!!renderAdditionalItem && getAdditionalItem()}
         </ul>
       )}
       {listType === 'ol' && (
-        <ol role={role} className={containerClasses}>
+        <ol
+          id={id}
+          role={role}
+          className={containerClasses}
+          style={{ ...listStyle }}
+        >
           {getItems()}
           {!!renderAdditionalItem && getAdditionalItem()}
         </ol>

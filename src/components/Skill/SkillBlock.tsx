@@ -1,3 +1,5 @@
+'use client';
+
 import React, {
   FC,
   Ref,
@@ -34,7 +36,12 @@ import { Menu, MenuItemType, MenuItemTypes, MenuSize } from '../Menu';
 import { ResizeObserver } from '../../shared/ResizeObserver/ResizeObserver';
 import { useMergedRefs } from '../../hooks/useMergedRefs';
 import { usePreviousState } from '../../hooks/usePreviousState';
-import { eventKeys, generateId, mergeClasses } from '../../shared/utilities';
+import {
+  canUseDocElement,
+  eventKeys,
+  generateId,
+  mergeClasses,
+} from '../../shared/utilities';
 
 import styles from './skill.module.scss';
 
@@ -125,6 +132,9 @@ export const SkillBlock: FC<SkillBlockProps> = React.forwardRef(
       useState<MenuItemTypes[]>(menuItems);
     const [_itemMenuOnly, setItemMenuOnly] = useState<boolean>(false);
 
+    // TODO: Upgrade to React 18 and use the new `useId` hook.
+    // This way the id will match on the server and client.
+    // For now, pass an id via props if using SSR.
     const skillId: React.MutableRefObject<string> = useRef<string>(
       id || generateId()
     );
@@ -235,13 +245,15 @@ export const SkillBlock: FC<SkillBlockProps> = React.forwardRef(
     }, [extraContent]);
 
     useEffect((): void => {
-      const skillElement: HTMLElement = document.getElementById(
-        `${skillId?.current}`
-      );
-      if (expandable) {
-        skillElement?.setAttribute('aria-expanded', `${skillExpanded}`);
-      } else if (skillElement.hasAttribute('aria-expanded')) {
-        skillElement?.removeAttribute('aria-expanded');
+      if (canUseDocElement()) {
+        const skillElement: HTMLElement = document.getElementById(
+          `${skillId?.current}`
+        );
+        if (expandable) {
+          skillElement?.setAttribute('aria-expanded', `${skillExpanded}`);
+        } else if (skillElement.hasAttribute('aria-expanded')) {
+          skillElement?.removeAttribute('aria-expanded');
+        }
       }
     }, [expandable, skillExpanded]);
 
@@ -453,9 +465,10 @@ export const SkillBlock: FC<SkillBlockProps> = React.forwardRef(
         }
 
         if (itemMenuOnly === null || reflow === null) {
-          const skillElement: HTMLElement = document.getElementById(
-            `${skillId?.current}`
-          );
+          let skillElement: HTMLElement | null = null;
+          if (canUseDocElement()) {
+            skillElement = document.getElementById(`${skillId?.current}`);
+          }
           const blockEndWidth: number =
             Math.floor(blockEndRef.current?.offsetWidth) || 0;
           const blockMiddleWidth: number =
@@ -515,8 +528,8 @@ export const SkillBlock: FC<SkillBlockProps> = React.forwardRef(
           {...rest}
           aria-disabled={disabled}
           className={skillClassNames}
-          id={skillId.current}
-          key={key || `${skillId.current}-key`}
+          id={skillId?.current}
+          key={key || `${skillId?.current}-key`}
           onBlur={(e: React.FocusEvent<HTMLDivElement>) => {
             if (disabled || readonly) {
               return;
