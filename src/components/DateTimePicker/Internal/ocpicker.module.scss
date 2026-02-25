@@ -1,10 +1,18 @@
 @import '../DatePicker/Styles/mixins';
 
+.sr-only {
+  @include screen-reader-only();
+}
+
 .picker {
   border: var(--picker-border);
   border-radius: $picker-border-radius;
   display: inline-flex;
   font-family: var(--font-stack-full);
+  
+  .pickerLabel {
+    position: relative;
+  }
 
   &-readonly {
     background: var(--grey-background1-color);
@@ -1848,6 +1856,12 @@
     &:hover {
       color: var(--picker-input-clear-icon-color-active);
     }
+
+    &:focus-visible {
+      opacity: 1;
+      box-shadow: var(--focus-visible-box-shadow);
+      @include focus-visible-forced-colors();
+    }
   }
 
   &-range {
@@ -2860,12 +2874,14 @@
     &-focused {
       border-color: transparent;
       box-shadow: var(--focus-visible-box-shadow);
+      @include focus-visible-forced-colors();
     }
 
     &-partial {
       &-focused {
         border-color: transparent;
         box-shadow: var(--focus-visible-box-shadow), $picker-box-shadow;
+        @include focus-visible-forced-colors();
       }
     }
   }

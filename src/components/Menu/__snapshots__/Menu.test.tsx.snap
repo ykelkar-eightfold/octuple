@@ -26,7 +26,7 @@ exports[`Menu Menu is large 1`] = `
       id="dropdown-"
       role="listbox"
       style="position: absolute; top: 4px; left: 0px;"
-      tabindex="0"
+      tabindex="-1"
     >
       <div
         class="my-menu-class menu-container large"
@@ -38,6 +38,7 @@ exports[`Menu Menu is large 1`] = `
         >
           <li
             class="menu-item large neutral my-menu-item-class"
+            role="presentation"
           >
             <button
               class="menu-item-button"
@@ -47,7 +48,6 @@ exports[`Menu Menu is large 1`] = `
               type="button"
             >
               <span
-                aria-hidden="false"
                 class="icon-wrapper"
                 role="presentation"
               >
@@ -82,6 +82,7 @@ exports[`Menu Menu is large 1`] = `
           </li>
           <li
             class="menu-item large neutral disabled my-menu-item-class"
+            role="presentation"
           >
             <button
               class="menu-item-button"
@@ -108,6 +109,7 @@ exports[`Menu Menu is large 1`] = `
           </li>
           <li
             class="menu-item-sub-header large my-menu-item-class"
+            role="presentation"
           >
             <span
               data-disabled="true"
@@ -120,6 +122,7 @@ exports[`Menu Menu is large 1`] = `
           </li>
           <li
             class="menu-item large neutral my-menu-item-class"
+            role="presentation"
           >
             <a
               aria-disabled="false"
@@ -147,11 +150,12 @@ exports[`Menu Menu is large 1`] = `
           </li>
           <li
             class="menu-item-custom large my-menu-item-class"
+            role="presentation"
           >
             <div
               aria-label="Radio Group"
               class="radio-group vertical radio-group-large"
-              role="group"
+              role="radiogroup"
             >
               <div
                 class="selector selector-large"
@@ -267,7 +271,7 @@ exports[`Menu Menu is medium 1`] = `
       id="dropdown-"
       role="listbox"
       style="position: absolute; top: 4px; left: 0px;"
-      tabindex="0"
+      tabindex="-1"
     >
       <div
         class="my-menu-class menu-container medium"
@@ -279,6 +283,7 @@ exports[`Menu Menu is medium 1`] = `
         >
           <li
             class="menu-item medium neutral my-menu-item-class"
+            role="presentation"
           >
             <button
               class="menu-item-button"
@@ -288,7 +293,6 @@ exports[`Menu Menu is medium 1`] = `
               type="button"
             >
               <span
-                aria-hidden="false"
                 class="icon-wrapper"
                 role="presentation"
               >
@@ -323,6 +327,7 @@ exports[`Menu Menu is medium 1`] = `
           </li>
           <li
             class="menu-item medium neutral disabled my-menu-item-class"
+            role="presentation"
           >
             <button
               class="menu-item-button"
@@ -349,6 +354,7 @@ exports[`Menu Menu is medium 1`] = `
           </li>
           <li
             class="menu-item-sub-header medium my-menu-item-class"
+            role="presentation"
           >
             <span
               data-disabled="true"
@@ -361,6 +367,7 @@ exports[`Menu Menu is medium 1`] = `
           </li>
           <li
             class="menu-item medium neutral my-menu-item-class"
+            role="presentation"
           >
             <a
               aria-disabled="false"
@@ -388,11 +395,12 @@ exports[`Menu Menu is medium 1`] = `
           </li>
           <li
             class="menu-item-custom medium my-menu-item-class"
+            role="presentation"
           >
             <div
               aria-label="Radio Group"
               class="radio-group vertical radio-group-medium"
-              role="group"
+              role="radiogroup"
             >
               <div
                 class="selector selector-medium"
@@ -508,7 +516,7 @@ exports[`Menu Menu is small 1`] = `
       id="dropdown-"
       role="listbox"
       style="position: absolute; top: 4px; left: 0px;"
-      tabindex="0"
+      tabindex="-1"
     >
       <div
         class="my-menu-class menu-container small"
@@ -520,6 +528,7 @@ exports[`Menu Menu is small 1`] = `
         >
           <li
             class="menu-item small neutral my-menu-item-class"
+            role="presentation"
           >
             <button
               class="menu-item-button"
@@ -529,7 +538,6 @@ exports[`Menu Menu is small 1`] = `
               type="button"
             >
               <span
-                aria-hidden="false"
                 class="icon-wrapper"
                 role="presentation"
               >
@@ -564,6 +572,7 @@ exports[`Menu Menu is small 1`] = `
           </li>
           <li
             class="menu-item small neutral disabled my-menu-item-class"
+            role="presentation"
           >
             <button
               class="menu-item-button"
@@ -590,6 +599,7 @@ exports[`Menu Menu is small 1`] = `
           </li>
           <li
             class="menu-item-sub-header small my-menu-item-class"
+            role="presentation"
           >
             <span
               data-disabled="true"
@@ -602,6 +612,7 @@ exports[`Menu Menu is small 1`] = `
           </li>
           <li
             class="menu-item small neutral my-menu-item-class"
+            role="presentation"
           >
             <a
               aria-disabled="false"
@@ -629,11 +640,12 @@ exports[`Menu Menu is small 1`] = `
           </li>
           <li
             class="menu-item-custom small my-menu-item-class"
+            role="presentation"
           >
             <div
               aria-label="Radio Group"
               class="radio-group vertical radio-group-small"
-              role="group"
+              role="radiogroup"
             >
               <div
                 class="selector selector-small"

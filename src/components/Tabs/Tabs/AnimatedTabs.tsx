@@ -1,6 +1,6 @@
-import React, { FC, Ref, useContext } from 'react';
+import React, { FC, Ref, useContext, useRef, useEffect } from 'react';
 import { Flipper } from 'react-flip-toolkit';
-import { OcThemeName } from '../../ConfigProvider';
+import { OcThemeName, ThemeNames } from '../../ConfigProvider';
 import ThemeContext, {
   ThemeContextProvider,
 } from '../../ConfigProvider/ThemeContext';
@@ -9,6 +9,7 @@ import { TabsProps, TabSize, TabVariant } from '../Tabs.types';
 import { mergeClasses } from '../../../shared/utilities';
 
 import styles from '../tabs.module.scss';
+import { useMergedRefs } from '../../../hooks/useMergedRefs';
 import themedComponentStyles from '../tabs.theme.module.scss';
 
 export const AnimatedTabs: FC<TabsProps> = React.forwardRef(
@@ -26,6 +27,8 @@ export const AnimatedTabs: FC<TabsProps> = React.forwardRef(
       style,
       underlined = false,
       variant = TabVariant.default,
+      enableArrowNav = true,
+      interactive = true,
       ...rest
     },
     ref: Ref<HTMLDivElement>
@@ -36,7 +39,11 @@ export const AnimatedTabs: FC<TabsProps> = React.forwardRef(
       currentActiveTab,
       theme,
       themeContainerId,
+      registerTablist,
     } = useTabs();
+
+    const tablistRef = useRef(null);
+    const combinedRef = useMergedRefs(ref, tablistRef);
 
     const contextualTheme: OcThemeName = useContext(ThemeContext);
     const mergedTheme: OcThemeName = configContextProps.noThemeContext
@@ -64,9 +71,27 @@ export const AnimatedTabs: FC<TabsProps> = React.forwardRef(
         [themedComponentStyles.theme]: mergedTheme,
         [styles.inverse]: colorInvert,
         [styles.scrollable]: scrollable,
+        [styles.aiAgent]: mergedTheme === ThemeNames.AIAgent,
       },
       classNames,
     ]);
+
+    useEffect(() => {
+      if (registerTablist && tablistRef.current) {
+        registerTablist(tablistRef.current);
+      }
+    }, [registerTablist]);
+
+    const childrenWithIndex = React.Children.map(children, (child, index) => {
+      if (React.isValidElement(child)) {
+        return React.cloneElement(child, {
+          ...child.props,
+          index,
+        });
+      }
+      return child;
+    });
+
     return (
       <Flipper flipKey={currentActiveTab}>
         <ThemeContextProvider
@@ -76,12 +101,12 @@ export const AnimatedTabs: FC<TabsProps> = React.forwardRef(
         >
           <div
             {...rest}
-            ref={ref}
-            role="tablist"
+            ref={combinedRef}
+            {...(interactive && { role: 'tablist' })}
             className={tabClassNames}
             style={style}
           >
-            {children}
+            {childrenWithIndex}
           </div>
         </ThemeContextProvider>
       </Flipper>

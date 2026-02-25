@@ -11,6 +11,7 @@
   width: fit-content;
   display: flex;
   align-items: center;
+  border: var(--pill-border);
 
   .label {
     font-family: var(--font-stack-full);
@@ -54,7 +55,7 @@
   .close-button {
     border: none;
     border-radius: 0;
-    background: inherit;
+    background: transparent;
     color: inherit;
     height: inherit;
     padding: 0;
@@ -62,13 +63,13 @@
     transition: none;
 
     &:hover {
-      background: inherit;
+      background: transparent;
       color: inherit;
       outline-color: transparent;
     }
 
     &:active {
-      background: inherit;
+      background: transparent;
       color: inherit;
       outline-color: transparent;
     }
@@ -441,6 +442,42 @@
     }
   }
 
+  &.ai-agent {
+    --bg: var(--ai-agent-background2-gradient);
+    --label: var(--ai-agent-color);
+    --hover-bg: var(--ai-agent-background1-gradient);
+
+    &:not(.readOnly):active {
+      background: var(--ai-agent-background3-gradient);
+    }
+
+    &:not(.readOnly):focus-visible {
+      outline: 2px solid -webkit-focus-ring-color;
+    }
+
+    .button,
+    .close-button {
+      .badge {
+        background-color: var(--ai-agent-background1-color);
+        color: var(--ai-agent-color);
+      }
+
+      &:hover {
+        .badge {
+          background-color: var(--ai-agent-background1-color);
+          color: var(--ai-agent-color);
+        }
+      }
+
+      &:active {
+        .badge {
+          background-color: var(--ai-agent-background1-color);
+          color: var(--ai-agent-color);
+        }
+      }
+    }
+  }
+
   .label + .button:not(:empty) {
     border-left: 1px solid var(--label);
     margin-left: $space-xxs;
@@ -675,6 +712,7 @@
     &.focus-visible,
     &:focus-visible {
       box-shadow: var(--focus-visible-box-shadow);
+      @include focus-visible-forced-colors();
     }
   }
 }

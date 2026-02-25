@@ -111,7 +111,6 @@ exports[`Upload List should be uploading when upload a file 1`] = `
               class="upload-list-item-text-icon"
             >
               <span
-                aria-hidden="false"
                 class="upload-spin-icon icon-wrapper"
                 role="presentation"
               >
@@ -150,12 +149,11 @@ exports[`Upload List should be uploading when upload a file 1`] = `
             >
               <button
                 aria-disabled="false"
-                aria-label="Delete"
+                aria-label="Delete file foo.png"
                 class="icon-delete button button-default button-disruptive button-medium round-shape icon-left"
                 type="button"
               >
                 <span
-                  aria-hidden="false"
                   class="icon icon-wrapper"
                   role="presentation"
                 >
@@ -224,7 +222,6 @@ exports[`Upload List should non-image format file preview 1`] = `
               target="_blank"
             >
               <span
-                aria-hidden="false"
                 class="icon-wrapper"
                 role="presentation"
               >
@@ -254,12 +251,11 @@ exports[`Upload List should non-image format file preview 1`] = `
             >
               <button
                 aria-disabled="false"
-                aria-label="Delete"
+                aria-label="Delete file not-image"
                 class="icon-delete button button-default button-disruptive button-medium round-shape icon-left"
                 type="button"
               >
                 <span
-                  aria-hidden="false"
                   class="icon icon-wrapper"
                   role="presentation"
                 >
@@ -318,12 +314,11 @@ exports[`Upload List should non-image format file preview 1`] = `
             >
               <button
                 aria-disabled="false"
-                aria-label="Delete"
+                aria-label="Delete file image"
                 class="icon-delete button button-default button-disruptive button-medium round-shape icon-left"
                 type="button"
               >
                 <span
-                  aria-hidden="false"
                   class="icon icon-wrapper"
                   role="presentation"
                 >
@@ -363,7 +358,6 @@ exports[`Upload List should non-image format file preview 1`] = `
               target="_blank"
             >
               <span
-                aria-hidden="false"
                 class="icon-wrapper"
                 role="presentation"
               >
@@ -393,12 +387,11 @@ exports[`Upload List should non-image format file preview 1`] = `
             >
               <button
                 aria-disabled="false"
-                aria-label="Delete"
+                aria-label="Delete file not-image"
                 class="icon-delete button button-default button-disruptive button-medium round-shape icon-left"
                 type="button"
               >
                 <span
-                  aria-hidden="false"
                   class="icon icon-wrapper"
                   role="presentation"
                 >
@@ -438,7 +431,6 @@ exports[`Upload List should non-image format file preview 1`] = `
               target="_blank"
             >
               <span
-                aria-hidden="false"
                 class="icon-wrapper"
                 role="presentation"
               >
@@ -468,12 +460,11 @@ exports[`Upload List should non-image format file preview 1`] = `
             >
               <button
                 aria-disabled="false"
-                aria-label="Delete"
+                aria-label="Delete file not-image"
                 class="icon-delete button button-default button-disruptive button-medium round-shape icon-left"
                 type="button"
               >
                 <span
-                  aria-hidden="false"
                   class="icon icon-wrapper"
                   role="presentation"
                 >
@@ -532,12 +523,11 @@ exports[`Upload List should non-image format file preview 1`] = `
             >
               <button
                 aria-disabled="false"
-                aria-label="Delete"
+                aria-label="Delete file image"
                 class="icon-delete button button-default button-disruptive button-medium round-shape icon-left"
                 type="button"
               >
                 <span
-                  aria-hidden="false"
                   class="icon icon-wrapper"
                   role="presentation"
                 >
@@ -596,12 +586,11 @@ exports[`Upload List should non-image format file preview 1`] = `
             >
               <button
                 aria-disabled="false"
-                aria-label="Delete"
+                aria-label="Delete file image"
                 class="icon-delete button button-default button-disruptive button-medium round-shape icon-left"
                 type="button"
               >
                 <span
-                  aria-hidden="false"
                   class="icon icon-wrapper"
                   role="presentation"
                 >
@@ -660,12 +649,11 @@ exports[`Upload List should non-image format file preview 1`] = `
             >
               <button
                 aria-disabled="false"
-                aria-label="Delete"
+                aria-label="Delete file image"
                 class="icon-delete button button-default button-disruptive button-medium round-shape icon-left"
                 type="button"
               >
                 <span
-                  aria-hidden="false"
                   class="icon icon-wrapper"
                   role="presentation"
                 >
@@ -724,12 +712,11 @@ exports[`Upload List should non-image format file preview 1`] = `
             >
               <button
                 aria-disabled="false"
-                aria-label="Delete"
+                aria-label="Delete file image"
                 class="icon-delete button button-default button-disruptive button-medium round-shape icon-left"
                 type="button"
               >
                 <span
-                  aria-hidden="false"
                   class="icon icon-wrapper"
                   role="presentation"
                 >
@@ -788,12 +775,11 @@ exports[`Upload List should non-image format file preview 1`] = `
             >
               <button
                 aria-disabled="false"
-                aria-label="Delete"
+                aria-label="Delete file image"
                 class="icon-delete button button-default button-disruptive button-medium round-shape icon-left"
                 type="button"
               >
                 <span
-                  aria-hidden="false"
                   class="icon icon-wrapper"
                   role="presentation"
                 >
@@ -852,12 +838,11 @@ exports[`Upload List should non-image format file preview 1`] = `
             >
               <button
                 aria-disabled="false"
-                aria-label="Delete"
+                aria-label="Delete file image"
                 class="icon-delete button button-default button-disruptive button-medium round-shape icon-left"
                 type="button"
               >
                 <span
-                  aria-hidden="false"
                   class="icon icon-wrapper"
                   role="presentation"
                 >
@@ -923,7 +908,6 @@ exports[`Upload List should support removeIcon, replaceIcon, and downloadIcon 1`
               class="upload-list-item-thumbnail"
             >
               <span
-                aria-hidden="false"
                 class="upload-spin-icon icon-wrapper"
                 role="presentation"
               >
@@ -965,12 +949,11 @@ exports[`Upload List should support removeIcon, replaceIcon, and downloadIcon 1`
             >
               <button
                 aria-disabled="false"
-                aria-label="Delete"
+                aria-label="Delete file image"
                 class="icon-delete button button-default button-disruptive button-medium round-shape icon-left"
                 type="button"
               >
                 <span
-                  aria-hidden="false"
                   class="icon icon-wrapper"
                   role="presentation"
                 >
@@ -1034,7 +1017,6 @@ exports[`Upload List should support removeIcon, replaceIcon, and downloadIcon 1`
                 type="button"
               >
                 <span
-                  aria-hidden="false"
                   class="icon icon-wrapper"
                   role="presentation"
                 >
@@ -1052,12 +1034,11 @@ exports[`Upload List should support removeIcon, replaceIcon, and downloadIcon 1`
               </button>
               <button
                 aria-disabled="false"
-                aria-label="Delete"
+                aria-label="Delete file image"
                 class="icon-delete button button-default button-disruptive button-medium round-shape icon-left"
                 type="button"
               >
                 <span
-                  aria-hidden="false"
                   class="icon icon-wrapper"
                   role="presentation"
                 >
@@ -1123,7 +1104,6 @@ exports[`Upload List should support removeIcon, replaceIcon, and downloadIcon 2`
               class="upload-list-item-thumbnail"
             >
               <span
-                aria-hidden="false"
                 class="upload-spin-icon icon-wrapper"
                 role="presentation"
               >
@@ -1165,12 +1145,11 @@ exports[`Upload List should support removeIcon, replaceIcon, and downloadIcon 2`
             >
               <button
                 aria-disabled="false"
-                aria-label="Delete"
+                aria-label="Delete file image"
                 class="icon-delete button button-default button-disruptive button-medium round-shape icon-left"
                 type="button"
               >
                 <span
-                  aria-hidden="false"
                   class="icon icon-wrapper"
                   role="presentation"
                 >
@@ -1234,7 +1213,6 @@ exports[`Upload List should support removeIcon, replaceIcon, and downloadIcon 2`
                 type="button"
               >
                 <span
-                  aria-hidden="false"
                   class="icon icon-wrapper"
                   role="presentation"
                 >
@@ -1252,12 +1230,11 @@ exports[`Upload List should support removeIcon, replaceIcon, and downloadIcon 2`
               </button>
               <button
                 aria-disabled="false"
-                aria-label="Delete"
+                aria-label="Delete file image"
                 class="icon-delete button button-default button-disruptive button-medium round-shape icon-left"
                 type="button"
               >
                 <span
-                  aria-hidden="false"
                   class="icon icon-wrapper"
                   role="presentation"
                 >
@@ -1323,7 +1300,6 @@ exports[`Upload List should support showRemoveIconButton, showReplaceButton, and
               class="upload-list-item-thumbnail"
             >
               <span
-                aria-hidden="false"
                 class="upload-spin-icon icon-wrapper"
                 role="presentation"
               >

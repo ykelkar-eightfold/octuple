@@ -20,7 +20,6 @@ exports[`Breadcrumb Crumb should support string \`0\` 1`] = `
           id="tooltip--wrapper"
         >
           <a
-            aria-describedby="tooltip-"
             aria-disabled="false"
             class="link-style full-width primary breadcrumb-link my-breadcrumb-links-class tooltip-reference"
             data-reference-id="tooltip--reference"
@@ -59,7 +58,6 @@ exports[`Breadcrumb Crumb should use custom links 1`] = `
             id="tooltip--wrapper"
           >
             <a
-              aria-describedby="tooltip-"
               aria-disabled="false"
               class="link-style full-width secondary"
               data-reference-id="tooltip--reference"
@@ -72,7 +70,6 @@ exports[`Breadcrumb Crumb should use custom links 1`] = `
             </a>
           </div>
           <span
-            aria-hidden="false"
             class="icon-wrapper"
             role="presentation"
           >
@@ -98,7 +95,6 @@ exports[`Breadcrumb Crumb should use custom links 1`] = `
             id="tooltip--wrapper"
           >
             <a
-              aria-describedby="tooltip-"
               aria-disabled="false"
               class="link-style full-width disruptive"
               data-reference-id="tooltip--reference"
@@ -111,7 +107,6 @@ exports[`Breadcrumb Crumb should use custom links 1`] = `
             </a>
           </div>
           <span
-            aria-hidden="false"
             class="icon-wrapper"
             role="presentation"
           >
@@ -137,8 +132,7 @@ exports[`Breadcrumb Crumb should use custom links 1`] = `
             id="tooltip--wrapper"
           >
             <span
-              aria-current="location"
-              aria-describedby="tooltip-"
+              aria-current="page"
               class="breadcrumb-link my-breadcrumb-links-class breadcrumb-link-read-only tooltip-reference"
               data-reference-id="tooltip--reference"
               id="tooltip--reference"
@@ -174,7 +168,6 @@ exports[`Breadcrumb Renders without crashing 1`] = `
             id="tooltip--wrapper"
           >
             <a
-              aria-describedby="tooltip-"
               aria-disabled="false"
               class="link-style full-width primary breadcrumb-link my-breadcrumb-links-class tooltip-reference"
               data-reference-id="tooltip--reference"
@@ -188,7 +181,6 @@ exports[`Breadcrumb Renders without crashing 1`] = `
             </a>
           </div>
           <span
-            aria-hidden="false"
             class="icon-wrapper"
             role="presentation"
           >
@@ -214,7 +206,6 @@ exports[`Breadcrumb Renders without crashing 1`] = `
             id="tooltip--wrapper"
           >
             <a
-              aria-describedby="tooltip-"
               aria-disabled="false"
               class="link-style full-width primary breadcrumb-link my-breadcrumb-links-class tooltip-reference"
               data-reference-id="tooltip--reference"
@@ -228,7 +219,6 @@ exports[`Breadcrumb Renders without crashing 1`] = `
             </a>
           </div>
           <span
-            aria-hidden="false"
             class="icon-wrapper"
             role="presentation"
           >
@@ -254,7 +244,6 @@ exports[`Breadcrumb Renders without crashing 1`] = `
             id="tooltip--wrapper"
           >
             <a
-              aria-describedby="tooltip-"
               aria-disabled="false"
               class="link-style full-width primary breadcrumb-link my-breadcrumb-links-class tooltip-reference"
               data-reference-id="tooltip--reference"
@@ -268,7 +257,6 @@ exports[`Breadcrumb Renders without crashing 1`] = `
             </a>
           </div>
           <span
-            aria-hidden="false"
             class="icon-wrapper"
             role="presentation"
           >
@@ -294,7 +282,6 @@ exports[`Breadcrumb Renders without crashing 1`] = `
             id="tooltip--wrapper"
           >
             <a
-              aria-describedby="tooltip-"
               aria-disabled="false"
               class="link-style full-width primary breadcrumb-link my-breadcrumb-links-class tooltip-reference"
               data-reference-id="tooltip--reference"
@@ -308,7 +295,6 @@ exports[`Breadcrumb Renders without crashing 1`] = `
             </a>
           </div>
           <span
-            aria-hidden="false"
             class="icon-wrapper"
             role="presentation"
           >
@@ -334,7 +320,6 @@ exports[`Breadcrumb Renders without crashing 1`] = `
             id="tooltip--wrapper"
           >
             <a
-              aria-describedby="tooltip-"
               aria-disabled="false"
               class="link-style full-width primary breadcrumb-link my-breadcrumb-links-class tooltip-reference"
               data-reference-id="tooltip--reference"
@@ -348,7 +333,6 @@ exports[`Breadcrumb Renders without crashing 1`] = `
             </a>
           </div>
           <span
-            aria-hidden="false"
             class="icon-wrapper"
             role="presentation"
           >
@@ -374,7 +358,6 @@ exports[`Breadcrumb Renders without crashing 1`] = `
             id="tooltip--wrapper"
           >
             <a
-              aria-describedby="tooltip-"
               aria-disabled="false"
               class="link-style full-width primary breadcrumb-link my-breadcrumb-links-class tooltip-reference"
               data-reference-id="tooltip--reference"
@@ -388,7 +371,6 @@ exports[`Breadcrumb Renders without crashing 1`] = `
             </a>
           </div>
           <span
-            aria-hidden="false"
             class="icon-wrapper"
             role="presentation"
           >
@@ -414,7 +396,6 @@ exports[`Breadcrumb Renders without crashing 1`] = `
             id="tooltip--wrapper"
           >
             <a
-              aria-describedby="tooltip-"
               aria-disabled="false"
               class="link-style full-width primary breadcrumb-link my-breadcrumb-links-class tooltip-reference"
               data-reference-id="tooltip--reference"
@@ -469,7 +450,6 @@ exports[`Breadcrumb should support custom attribute 1`] = `
           id="tooltip--wrapper"
         >
           <a
-            aria-describedby="tooltip-"
             aria-disabled="false"
             class="link-style full-width primary breadcrumb-link my-breadcrumb-links-class tooltip-reference"
             data-custom="custom-item"
@@ -483,7 +463,6 @@ exports[`Breadcrumb should support custom attribute 1`] = `
           </a>
         </div>
         <span
-          aria-hidden="false"
           class="icon-wrapper"
           role="presentation"
         >
@@ -509,7 +488,6 @@ exports[`Breadcrumb should support custom attribute 1`] = `
           id="tooltip--wrapper"
         >
           <a
-            aria-describedby="tooltip-"
             aria-disabled="false"
             class="link-style full-width primary breadcrumb-link my-breadcrumb-links-class tooltip-reference"
             data-reference-id="tooltip--reference"

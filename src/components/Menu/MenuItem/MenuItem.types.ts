@@ -1,5 +1,10 @@
 import React from 'react';
-import { DropdownMenuProps, MenuSize, MenuVariant } from '../Menu.types';
+import {
+  DropdownMenuProps,
+  MenuSize,
+  MenuVariant,
+  MenuRenderFunction,
+} from '../Menu.types';
 import { OcBaseProps } from '../../OcBase';
 import { IconProps } from '../../Icon';
 import { LinkProps } from '../../Link';
@@ -57,6 +62,10 @@ export interface MenuItemProps {
    * @default false
    */
   wrap?: boolean;
+  /**
+   * Menu renderer for nested menus
+   */
+  menuRenderer?: MenuRenderFunction;
 }
 
 type NativeMenuButtonProps = Omit<OcBaseProps<HTMLButtonElement>, 'children'>;
@@ -97,8 +106,9 @@ export interface MenuItemButtonProps
   /**
    * On Click handler of the menu item
    * @param value
+   * @param event
    */
-  onClick?: (value: any) => void;
+  onClick?: (value: any, event?: React.MouseEvent<any>) => void;
   /**
    * Secondary action button for the menu item
    */
@@ -111,6 +121,10 @@ export interface MenuItemButtonProps
    * Display label of the menu item
    */
   text?: string;
+  /**
+   * Role for the list item (li) element
+   */
+  listItemRole?: string;
 }
 
 export interface MenuItemLinkProps
@@ -155,7 +169,7 @@ export interface MenuItemSubHeaderProps
 export interface IMenuItemRender {
   value: any;
   index: number;
-  onChange: (value: any) => void;
+  onChange: (value: any, event?: React.MouseEvent<any>) => void;
   ref?: React.ForwardedRef<any>;
 }
 

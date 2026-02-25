@@ -48,11 +48,13 @@ export const Dropdown: FC<DropdownProps> = React.memo(
     (
       {
         ariaRef,
+        ariaHaspopupValue = 'true',
         children,
         classNames,
         closeOnDropdownClick = true,
         closeOnReferenceClick = true,
         closeOnOutsideClick = true,
+        shouldCloseOnTab = false,
         disabled,
         dropdownClassNames,
         dropdownStyle,
@@ -65,6 +67,7 @@ export const Dropdown: FC<DropdownProps> = React.memo(
         placement = 'bottom-start',
         portal = false,
         positionStrategy = 'absolute',
+        referenceRole = 'button',
         referenceOnClick,
         referenceOnKeydown,
         referenceWrapperClassNames,
@@ -75,7 +78,10 @@ export const Dropdown: FC<DropdownProps> = React.memo(
         trigger = 'click',
         visible,
         width,
-        overlayTabIndex = 0,
+        // Overlay should not be focusable by default to prevent issues with expected tab order
+        overlayTabIndex = -1,
+        overlayProps,
+        toggleDropdownOnShiftTab = true,
       },
       ref: React.ForwardedRef<DropdownRef>
     ) => {
@@ -117,6 +123,14 @@ export const Dropdown: FC<DropdownProps> = React.memo(
           ? getFocusableElements?.()
           : null;
         return focusableElements?.[0];
+      };
+
+      const getFocusableItems = (): HTMLElement[] => {
+        if (!refs.floating.current) return [];
+
+        return Array.from(
+          refs.floating.current.querySelectorAll<HTMLElement>(SELECTORS)
+        ).filter((el) => focusable(el));
       };
 
       const focusFirstElement = (): void => {
@@ -197,6 +211,14 @@ export const Dropdown: FC<DropdownProps> = React.memo(
         );
       }, [refs.reference, refs.floating, update]);
 
+      // Add a new useEffect to update position when overlay content changes
+      useEffect(() => {
+        if (mergedVisible && refs.floating.current) {
+          // Update the position when the overlay content changes
+          update();
+        }
+      }, [overlay, mergedVisible, update, refs.floating]);
+
       const dropdownClasses: string = mergeClasses([
         dropdownClassNames,
         styles.dropdownWrapper,
@@ -272,33 +294,71 @@ export const Dropdown: FC<DropdownProps> = React.memo(
           event?.preventDefault();
           toggle(false)(event);
         }
+        if (event?.key === eventKeys.ESCAPE) {
+          toggle(false)(event);
+        }
+        if (event?.key === eventKeys.TAB && mergedVisible && shouldCloseOnTab) {
+          toggle(false)(event);
+        }
         if (
-          event?.key === eventKeys.ESCAPE ||
-          (event?.key === eventKeys.TAB &&
-            event.shiftKey &&
-            !(event.target as HTMLElement).matches(':focus-within'))
+          event?.key === eventKeys.TAB &&
+          event.shiftKey &&
+          !(event.target as HTMLElement).matches(':focus-within')
         ) {
           toggle(false)(event);
         }
       };
 
       const handleFloatingKeyDown = (event: React.KeyboardEvent): void => {
-        if (event?.key === eventKeys.ESCAPE) {
-          toggle(false)(event);
+        if (
+          !event.defaultPrevented &&
+          (event.key === eventKeys.ARROWDOWN || event.key === eventKeys.ARROWUP)
+        ) {
+          const items = getFocusableItems();
+          const currentIndex = items.indexOf(
+            document.activeElement as HTMLElement
+          );
+
+          if (event.key === eventKeys.ARROWDOWN) {
+            event.preventDefault();
+            const next = items[currentIndex + 1] || items[0];
+            next?.focus();
+            return;
+          }
+
+          if (event.key === eventKeys.ARROWUP) {
+            event.preventDefault();
+            const prev = items[currentIndex - 1] || items[items.length - 1];
+            prev?.focus();
+            return;
+          }
         }
-        if (event?.key === eventKeys.TAB) {
+
+        if (event.key === eventKeys.ESCAPE) {
+          toggle(false)(event);
+          return;
+        }
+
+        if (event?.key === eventKeys.TAB && mergedVisible && !event.shiftKey) {
+          if (shouldCloseOnTab) {
+            toggle(false)(event);
+          } else {
+            timeout && clearTimeout(timeout);
+            timeout = setTimeout(() => {
+              if (
+                refs.floating.current &&
+                !refs.floating.current.contains(document.activeElement)
+              ) {
+                toggle(false)(event);
+              }
+            }, NO_ANIMATION_DURATION);
+          }
+        }
+        if (event?.key === eventKeys.TAB && event.shiftKey && mergedVisible) {
           timeout && clearTimeout(timeout);
           timeout = setTimeout(() => {
             if (!refs.floating.current.matches(':focus-within')) {
-              toggle(false)(event);
-            }
-          }, NO_ANIMATION_DURATION);
-        }
-        if (event?.key === eventKeys.TAB && event.shiftKey) {
-          timeout && clearTimeout(timeout);
-          timeout = setTimeout(() => {
-            if (refs.floating.current.matches(':focus-within')) {
-              toggle(true)(event);
+              toggle(toggleDropdownOnShiftTab)(event);
             }
           }, NO_ANIMATION_DURATION);
         }
@@ -322,14 +382,21 @@ export const Dropdown: FC<DropdownProps> = React.memo(
         // If there's an ariaRef, apply the a11y attributes to it, rather than the immediate child.
         if (ariaRef?.current) {
           ariaRef.current.setAttribute('aria-expanded', `${mergedVisible}`);
-          ariaRef.current.setAttribute('aria-haspopup', 'true');
+
+          // Only add aria-haspopup for non-combobox elements if it is not already set
+          const currentRole = ariaRef.current.getAttribute('role');
+          const currentAriaHaspopup =
+            ariaRef.current.getAttribute('aria-haspopup');
+          if (currentRole !== 'combobox' && !currentAriaHaspopup) {
+            ariaRef.current.setAttribute('aria-haspopup', ariaHaspopupValue);
+          }
 
           if (!ariaRef.current.hasAttribute('aria-controls')) {
             ariaRef.current.setAttribute('aria-controls', dropdownId);
           }
 
           if (!ariaRef.current.hasAttribute('role')) {
-            ariaRef.current.setAttribute('role', 'button');
+            ariaRef.current.setAttribute('role', referenceRole);
           }
 
           return cloneElement(child, {
@@ -353,8 +420,10 @@ export const Dropdown: FC<DropdownProps> = React.memo(
           className: referenceWrapperClasses,
           'aria-controls': dropdownId,
           'aria-expanded': mergedVisible,
-          'aria-haspopup': true,
-          role: 'button',
+          'aria-haspopup':
+            child.props?.['aria-haspopup'] ??
+            (child.props.role !== 'combobox' ? ariaHaspopupValue : undefined),
+          role: child.props?.role || referenceRole,
           tabIndex: tabIndex,
         });
       };
@@ -391,7 +460,7 @@ export const Dropdown: FC<DropdownProps> = React.memo(
           >
             <div
               ref={refs.setFloating}
-              style={dropdownStyles}
+              style={dropdownStyles as React.CSSProperties}
               className={dropdownClasses}
               tabIndex={overlayTabIndex}
               onClick={
@@ -400,6 +469,7 @@ export const Dropdown: FC<DropdownProps> = React.memo(
               onKeyDown={handleFloatingKeyDown}
               id={dropdownId}
               role={role}
+              {...overlayProps}
             >
               {overlay}
             </div>

@@ -153,6 +153,24 @@ const ExternalElementDropdownComponent = (): JSX.Element => {
   );
 };
 
+const ComplexDropdownWithAriaHaspopupComponent = (): JSX.Element => {
+  const buttonRef: React.MutableRefObject<HTMLButtonElement> =
+    useRef<HTMLButtonElement>(null);
+
+  return (
+    <Dropdown {...dropdownProps} ariaRef={buttonRef} ariaHaspopupValue="true">
+      <div>
+        <Button
+          ref={buttonRef}
+          data-testid="test-button-id"
+          text="Test button"
+          aria-haspopup="listbox"
+        />
+      </div>
+    </Dropdown>
+  );
+};
+
 const filterOverlay1 = () => (
   <List<User>
     items={sampleList}
@@ -385,7 +403,7 @@ describe('Dropdown', () => {
     const dropdownAriaRef = screen.getByTestId('test-input-id');
     expect(dropdownAriaRef.getAttribute('aria-controls')).toBeTruthy();
     expect(dropdownAriaRef.getAttribute('aria-expanded')).toBe('false');
-    expect(dropdownAriaRef.getAttribute('aria-haspopup')).toBe('true');
+    expect(dropdownAriaRef.getAttribute('aria-haspopup')).toBeNull();
     expect(dropdownAriaRef.getAttribute('role')).toBe('combobox');
     dropdownAriaRef.click();
     await waitFor(() => screen.getByText('User profile 1'));
@@ -572,5 +590,33 @@ describe('Dropdown', () => {
     // Verify dropdown remains open
     expect(referenceElement.getAttribute('aria-expanded')).toBe('true');
     expect(screen.getByText('User profile 1')).toBeVisible();
+  });
+
+  test('Overlay container is not focusable by default', async () => {
+    const { getByTestId } = render(<DropdownComponent />);
+    const referenceElement = getByTestId('dropdown-reference');
+
+    // Click to open dropdown
+    act(() => {
+      userEvent.click(referenceElement);
+    });
+
+    // Wait for menu to be visible
+    await waitFor(() => screen.getByText('User profile 1'));
+
+    const dropdownWrapper = document.querySelector(
+      '.dropdown-wrapper'
+    ) as HTMLElement;
+
+    expect(dropdownWrapper.getAttribute('tabindex')).toBe('-1');
+  });
+
+  test('Should respect the existing aria-haspopup attribute on the reference element', async () => {
+    const { getByTestId } = render(
+      <ComplexDropdownWithAriaHaspopupComponent />
+    );
+    const referenceElement = getByTestId('test-button-id');
+
+    expect(referenceElement.getAttribute('aria-haspopup')).toBe('listbox');
   });
 });

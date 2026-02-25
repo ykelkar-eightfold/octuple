@@ -12,13 +12,15 @@ import {
   OcPickerRefConfig,
   OcPickerTimeProps,
 } from './OcPicker.types';
+import { eventKeys } from '../../../shared/utilities/eventKeys';
 import { mergeClasses } from '../../../shared/utilities';
+import visuallyHidden from '../../../shared/utilities/visuallyHidden';
 import { FocusTrap } from '../../../shared/FocusTrap';
 import { useMergedState } from '../../../hooks/useMergedState';
 import OcPickerPartial from './OcPickerPartial';
 import OcPickerTrigger from './OcPickerTrigger';
 import { formatValue, isEqual, parseValue } from './Utils/dateUtil';
-import getDataOrAriaProps, { toArray } from './Utils/miscUtil';
+import getDataOrAriaProps, { getDatePickerId, toArray } from './Utils/miscUtil';
 import type { ContextOperationRefProps } from './PartialContext';
 import PartialContext from './PartialContext';
 import type { OcPickerMode } from './OcPicker.types';
@@ -44,6 +46,7 @@ type MergedOcPickerProps<DateType> = {
 function InnerPicker<DateType>(props: OcPickerProps<DateType>) {
   const {
     allowClear,
+    announceArrowKeyNavigation,
     autoComplete = 'off',
     autoFocus,
     bordered = true,
@@ -63,6 +66,7 @@ function InnerPicker<DateType>(props: OcPickerProps<DateType>) {
     generateConfig,
     getPopupContainer,
     id,
+    label,
     inputReadOnly,
     inputRender,
     locale,
@@ -109,12 +113,22 @@ function InnerPicker<DateType>(props: OcPickerProps<DateType>) {
   const inputRef: React.MutableRefObject<HTMLInputElement> =
     useRef<HTMLInputElement>(null);
 
+  const closedByEscRef: React.MutableRefObject<boolean> =
+    useRef<boolean>(false);
+
   const needConfirmButton: boolean =
     (picker === 'date' && !!showTime) || picker === 'time';
 
   const formatList: (string | CustomFormat<DateType>)[] = toArray(
     getDefaultFormat(format, picker, showTime, use12Hours)
   );
+
+  // Generate unique ID if not provided
+  const datePickerId: string = id || getDatePickerId();
+  // Check if this is a time picker
+  const isTimePicker: boolean = picker === 'time';
+  // Generate listbox ID for time picker
+  const listboxId: string = `${datePickerId}-listbox`;
 
   const partialDivRef: React.MutableRefObject<HTMLDivElement> =
     useRef<HTMLDivElement>(null);
@@ -232,6 +246,26 @@ function InnerPicker<DateType>(props: OcPickerProps<DateType>) {
     onBlur?.(e);
   };
 
+  const handleClearClick = (
+    e: React.MouseEvent<HTMLSpanElement, MouseEvent>
+  ): void => {
+    e.preventDefault();
+    e.stopPropagation();
+    triggerChange(null);
+    triggerOpen(false);
+  };
+
+  const handleClearKeyDown = (
+    e: React.KeyboardEvent<HTMLSpanElement>
+  ): void => {
+    if (e.key === eventKeys.ENTER || e.key === eventKeys.SPACE) {
+      e.preventDefault();
+      e.stopPropagation();
+      triggerChange(null);
+      triggerOpen(false);
+    }
+  };
+
   const [inputProps, { focused, typing, trap, setTrap }] = usePickerInput({
     trapFocus,
     blurToCancel: needConfirmButton,
@@ -273,11 +307,17 @@ function InnerPicker<DateType>(props: OcPickerProps<DateType>) {
     onFocus,
     onBlur: onInternalBlur,
     changeOnBlur,
+    closedByEscRef,
   });
 
   // Close should sync back with text value
   useEffect((): void => {
     if (!mergedOpen) {
+      if (closedByEscRef.current) {
+        closedByEscRef.current = false;
+        return;
+      }
+
       setSelectedValue(mergedValue);
 
       if (!valueTexts.length || valueTexts[0] === '') {
@@ -363,6 +403,10 @@ function InnerPicker<DateType>(props: OcPickerProps<DateType>) {
         onPartialChange?.(viewDate, mode);
       }}
       size={size}
+      visible={mergedOpen}
+      trap={trap}
+      announceArrowKeyNavigation={announceArrowKeyNavigation}
+      {...(isTimePicker && { listboxId })}
     />
   );
 
@@ -373,9 +417,12 @@ function InnerPicker<DateType>(props: OcPickerProps<DateType>) {
   const partial: JSX.Element = trapFocus ? (
     <FocusTrap
       data-testid="picker-dialog"
-      role="dialog"
-      aria-modal="true"
-      id="dp-dialog-1"
+      {...(isTimePicker && { id: listboxId })}
+      {...(!isTimePicker && {
+        role: 'dialog',
+        'aria-modal': 'true',
+        'aria-labelledby': 'dp-dialog-1-label',
+      })}
       trap={trap}
       className={styles.pickerPartialContainer}
       onMouseDown={(e) => {
@@ -426,26 +473,31 @@ function InnerPicker<DateType>(props: OcPickerProps<DateType>) {
           e.preventDefault();
           e.stopPropagation();
         }}
-        onMouseUp={(e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => {
-          e.preventDefault();
-          e.stopPropagation();
-          triggerChange(null);
-          triggerOpen(false);
-        }}
+        onMouseUp={handleClearClick}
+        onKeyDown={handleClearKeyDown}
         className={styles.pickerClear}
         role="button"
+        tabIndex={0}
       >
         {clearIcon || <span className={styles.pickerClearBtn} />}
       </span>
     );
   }
 
+  // For time picker, use listbox role; for others, use dialog
+  const popupRole: 'listbox' | 'dialog' = isTimePicker ? 'listbox' : 'dialog';
+  const popupId: string = isTimePicker ? listboxId : 'dp-dialog-1';
+
   const mergedInputProps: React.InputHTMLAttributes<HTMLInputElement> = {
     role: 'combobox',
     'aria-expanded': mergedOpen,
-    'aria-haspopup': 'dialog',
-    'aria-controls': 'dp-dialog-1',
-    id,
+    'aria-haspopup': popupRole,
+    ...(mergedOpen && { 'aria-controls': popupId }),
+    'aria-label':
+      label ||
+      placeholder ||
+      (isTimePicker ? locale.timeSelect : locale.dateSelect),
+    id: datePickerId,
     tabIndex,
     disabled,
     readOnly:
@@ -532,6 +584,13 @@ function InnerPicker<DateType>(props: OcPickerProps<DateType>) {
           onContextMenu={onContextMenu}
           onClick={onClick}
         >
+          <div className={styles.pickerLabel}>
+            {(label || placeholder) && (
+              <label htmlFor={datePickerId} style={visuallyHidden}>
+                {label || placeholder}
+              </label>
+            )}
+          </div>
           <div
             className={mergeClasses([
               styles.pickerInput,

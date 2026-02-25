@@ -32,6 +32,11 @@ const locale: Locale = {
   nextAriaLabel: 'Nasledujúci rok',
   superPrevAriaLabel: 'Predchádzajúci rok',
   superNextAriaLabel: 'Nasledujúci rok',
+  arrowKeyNavigationText: 'Na navigáciu v kalendári použite klávesy so šípkami',
+  hourLabel: 'Hodiny',
+  minuteLabel: 'Minúty',
+  secondLabel: 'Sekundy',
+  ampmLabel: 'AM/PM',
 };
 
 export default locale;

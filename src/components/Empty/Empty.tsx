@@ -29,10 +29,12 @@ export const Empty: FC<EmptyProps> = React.forwardRef(
       classNames,
       description,
       descriptionClassNames = '',
+      titleClassNames = '',
       image,
       imageStyle,
       mode = EmptyMode.data,
       title,
+      headingLevel,
       ...rest
     },
     ref: Ref<HTMLDivElement>
@@ -64,7 +66,7 @@ export const Empty: FC<EmptyProps> = React.forwardRef(
 
     if (image) {
       if (typeof image === 'string') {
-        imageNode = <img alt={description} src={image} />;
+        imageNode = <img alt="" src={image} />;
       } else {
         imageNode = image;
       }
@@ -86,7 +88,11 @@ export const Empty: FC<EmptyProps> = React.forwardRef(
         <div className={styles.emptyImage} style={imageStyle}>
           {imageNode}
         </div>
-        {title && <div className={styles.emptyTitle}>{title}</div>}
+        {title && (
+          <div className={mergeClasses([styles.emptyTitle, titleClassNames])}>
+            {title}
+          </div>
+        )}
         {description && (
           <div
             className={mergeClasses([

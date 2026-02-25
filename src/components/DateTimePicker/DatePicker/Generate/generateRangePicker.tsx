@@ -25,7 +25,7 @@ import type {
   PickerLocale,
   RangePickerProps,
 } from './Generate.types';
-import { getTimeProps } from './Generate';
+import { getTimeProps } from './utils';
 import LocaleReceiver, {
   useLocaleReceiver,
 } from '../../../LocaleProvider/LocaleReceiver';
@@ -78,6 +78,7 @@ export default function generateRangePicker<DateType>(
       todayButtonProps,
       todayActive = false,
       todayText: defaultTodayText,
+      trapFocus = false,
       ...rest
     } = props;
     const largeScreenActive: boolean = useMatchMedia(Breakpoints.Large);
@@ -268,6 +269,7 @@ export default function generateRangePicker<DateType>(
               superPrevIcon={IconName.mdiChevronDoubleLeft}
               superNextIcon={IconName.mdiChevronDoubleRight}
               allowClear
+              trapFocus={trapFocus}
               {...rest}
               {...additionalOverrideProps}
               classNames={mergeClasses([

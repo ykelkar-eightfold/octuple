@@ -1,8 +1,8 @@
 'use client';
 
-import React, { FC, Ref, useContext, useEffect, useState } from 'react';
+import React, { FC, Ref, useContext, useEffect, useRef, useState } from 'react';
 import GradientContext, { Gradient } from '../ConfigProvider/GradientContext';
-import { OcThemeName } from '../ConfigProvider';
+import { OcThemeName, ThemeNames } from '../ConfigProvider';
 import ThemeContext, {
   ThemeContextProvider,
 } from '../ConfigProvider/ThemeContext';
@@ -14,6 +14,7 @@ import LocaleReceiver, {
   useLocaleReceiver,
 } from '../LocaleProvider/LocaleReceiver';
 import enUS from './Locale/en_US';
+import { useMergedRefs } from '../../hooks/useMergedRefs';
 
 import styles from './infoBar.module.scss';
 import themedComponentStyles from './infoBar.theme.module.scss';
@@ -28,6 +29,7 @@ export const InfoBar: FC<InfoBarsProps> = React.forwardRef(
       closable,
       closeButtonAriaLabelText: defaultCloseButtonAriaLabelText,
       closeButtonProps,
+      closeButtonRef: externalCloseButtonRef,
       closeIcon = IconName.mdiClose,
       configContextProps = {
         noGradientContext: false,
@@ -35,10 +37,12 @@ export const InfoBar: FC<InfoBarsProps> = React.forwardRef(
       },
       content,
       contentClassNames,
+      contentId,
       contentWrapperClassNames,
       gradient = false,
       icon,
       iconClassNames,
+      iconProps = {},
       locale = enUS,
       onClose,
       role = 'alert',
@@ -46,8 +50,14 @@ export const InfoBar: FC<InfoBarsProps> = React.forwardRef(
       theme,
       themeContainerId,
       type = InfoBarType.neutral,
+      moveFocusToSnackbar = false,
       ...rest
     } = props;
+    const internalCloseButtonRef = useRef<HTMLButtonElement>(null);
+    const closeButtonRef = useMergedRefs(
+      internalCloseButtonRef,
+      externalCloseButtonRef
+    );
 
     const contextualGradient: Gradient = useContext(GradientContext);
     const mergedGradient: boolean = configContextProps.noGradientContext
@@ -92,6 +102,7 @@ export const InfoBar: FC<InfoBarsProps> = React.forwardRef(
       { [styles.disruptive]: type === InfoBarType.disruptive },
       { [themedComponentStyles.theme]: mergedTheme },
       { [styles.gradient]: mergedGradient },
+      { [styles.aiAgent]: mergedTheme === ThemeNames.AIAgent },
     ]);
 
     const messageClasses: string = mergeClasses([
@@ -130,10 +141,12 @@ export const InfoBar: FC<InfoBarsProps> = React.forwardRef(
                 ref={ref}
                 style={style}
                 role={role}
+                aria-describedby={contentId}
               >
                 <Icon
                   path={getIconName()}
                   classNames={mergeClasses([styles.icon, iconClassNames])}
+                  {...iconProps}
                 />
                 <div
                   className={mergeClasses([
@@ -141,7 +154,9 @@ export const InfoBar: FC<InfoBarsProps> = React.forwardRef(
                     contentWrapperClassNames,
                   ])}
                 >
-                  <div className={messageClasses}>{content}</div>
+                  <div className={messageClasses} id={contentId}>
+                    {content}
+                  </div>
                   {actionButtonProps && (
                     <Button
                       buttonWidth={ButtonWidth.fitContent}
@@ -162,6 +177,7 @@ export const InfoBar: FC<InfoBarsProps> = React.forwardRef(
                     iconProps={{ path: closeIcon }}
                     onClick={onClose}
                     shape={ButtonShape.Round}
+                    ref={closeButtonRef}
                     transparent
                     {...closeButtonProps}
                     classNames={mergeClasses([

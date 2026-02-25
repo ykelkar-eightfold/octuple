@@ -110,6 +110,8 @@ export const Select: FC<SelectProps> = React.forwardRef(
       themeContainerId,
       toggleButtonAriaLabel,
       'data-test-id': dataTestId,
+      keepCountPillFocus = true,
+      'aria-label': ariaLabel,
     },
     ref: Ref<HTMLDivElement>
   ) => {
@@ -614,17 +616,48 @@ export const Select: FC<SelectProps> = React.forwardRef(
           pills.push(pill());
         }
         if (pills?.length === count && filled) {
+          const remainingCount = moreOptionsCount - count;
+          const accessibleLabel = `and ${remainingCount} more ${
+            remainingCount === 1 ? 'option' : 'options'
+          } selected`;
+          // if keepCountPillFocus is true, keep the count pill focusable
+          const updatedPillProps = {
+            ...pillProps,
+            ...(keepCountPillFocus &&
+            'tabIndex' in pillProps &&
+            pillProps.tabIndex === -1
+              ? { tabIndex: 0 }
+              : {}),
+          };
           pills.push(
             <Pill
               classNames={countPillClassNames}
               disabled={mergedDisabled}
               id="select-pill-count"
               key="select-count"
-              label={'+' + (moreOptionsCount - count)}
+              label={'+' + remainingCount}
               tabIndex={0}
               theme={'blueGreen'}
               size={selectSizeToPillSizeMap.get(mergedSize)}
-              {...pillProps}
+              onClick={() => {
+                if (!dropdownVisible) {
+                  setDropdownVisibility(true);
+                }
+              }}
+              onKeyDown={(event) => {
+                if (
+                  event.key === eventKeys.ENTER ||
+                  event.key === eventKeys.SPACE
+                ) {
+                  event.preventDefault();
+                  if (!dropdownVisible) {
+                    setDropdownVisibility(true);
+                  }
+                }
+              }}
+              aria-label={accessibleLabel}
+              role="button"
+              {...updatedPillProps}
             />
           );
         }
@@ -651,23 +684,46 @@ export const Select: FC<SelectProps> = React.forwardRef(
     }: {
       options: SelectOption[];
     }): JSX.Element => {
+      const {
+        menuItemRole,
+        menuButtonRole,
+        menuButtonHasRole,
+        ...restMenuProps
+      } = menuProps;
+
       const filteredOptions = (options || []).filter(
         (opt: SelectOption) => !opt.hideOption
       );
       const updatedItems: SelectOption[] = filteredOptions.map(
-        ({ hideOption, ...opt }) => ({
-          ...opt,
-          classNames: mergeClasses([{ [styles.selectedOption]: opt.selected }]),
-          role: 'option',
-          'aria-selected': opt.selected,
-        })
+        ({ hideOption, role: optRole, ...opt }) => {
+          const item: SelectOption = {
+            ...opt,
+            classNames: mergeClasses([
+              { [styles.selectedOption]: opt.selected },
+            ]),
+            listItemRole: menuItemRole,
+            'aria-selected': opt.selected,
+          };
+
+          if (menuButtonHasRole === true) {
+            item.role = menuButtonRole ?? optRole ?? 'option';
+          } else if (menuButtonHasRole === false) {
+            // Don't set role property - this will allow MenuItemButton to use its default or no role
+            // We need to explicitly set it to null to remove it
+            item.role = null;
+          } else {
+            item.role = optRole ?? 'option';
+          }
+
+          return item;
+        }
       );
       if (filteredOptions.length > 0) {
         return (
           <Menu
-            aria-multiselectable={multiple ? 'true' : undefined}
             id={selectMenuId?.current}
-            {...menuProps}
+            {...restMenuProps}
+            itemProps={menuItemRole ? { role: menuItemRole } : undefined}
             items={updatedItems}
             onChange={(value) => {
               const option = updatedItems.find(
@@ -874,7 +930,7 @@ export const Select: FC<SelectProps> = React.forwardRef(
                   options?.length > 0)
               }
               ref={dropdownRef}
-              role={'group'}
+              role={null}
             >
               <div className={styles.selectInputWrapper}>
                 {/* When Dropdown is visible, place Pills in the reference element */}
@@ -883,6 +939,7 @@ export const Select: FC<SelectProps> = React.forwardRef(
                   ref={inputRef}
                   aria-activedescendant={currentlySelectedOption.current?.id}
                   aria-controls={selectMenuId?.current}
+                  aria-expanded={dropdownVisible}
                   configContextProps={configContextProps}
                   status={status}
                   theme={mergedTheme}
@@ -917,6 +974,7 @@ export const Select: FC<SelectProps> = React.forwardRef(
                   shape={selectShapeToTextInputShapeMap.get(mergedShape)}
                   size={selectSizeToTextInputSizeMap.get(mergedSize)}
                   value={selectedOptionText}
+                  ariaLabel={ariaLabel}
                 />
               </div>
             </Dropdown>

@@ -137,6 +137,22 @@ const SmallMenuComponent = (): JSX.Element => {
   );
 };
 
+const ListboxMenuComponent = (): JSX.Element => {
+  const _menuProps: object = {
+    ...menuProps,
+    role: 'listbox',
+    itemProps: {
+      role: 'option',
+    },
+  };
+
+  return (
+    <Dropdown overlay={MenuOverlay(_menuProps)}>
+      <Button text="Menu dropdown" />
+    </Dropdown>
+  );
+};
+
 describe('Menu', () => {
   beforeAll(() => {
     matchMedia = new MatchMediaMock();
@@ -193,6 +209,15 @@ describe('Menu', () => {
     expect(
       (container.querySelector('.menu-container') as HTMLElement).style.color
     ).toContain('red');
+  });
+
+  test('Should support passing itemProps to menu items', async () => {
+    render(<ListboxMenuComponent />);
+    const dropdownButton = screen.getByRole('button');
+    dropdownButton.click();
+    await waitFor(() => screen.getByText('Date'));
+    const item = screen.getByRole('option', { name: /Date/ });
+    expect(item).toBeTruthy();
   });
 
   test('Menu is large', async () => {
@@ -287,5 +312,82 @@ describe('Menu', () => {
     fireEvent.click(getByRole('button'));
 
     expect(handleClick).toHaveBeenCalled();
+  });
+
+  test('Menu onChange passes the event object to the handler', () => {
+    let capturedEvent: React.MouseEvent | undefined;
+
+    const menuChangeHandler = jest.fn((_item, e) => {
+      capturedEvent = e;
+    });
+
+    const { getByText } = render(
+      <Menu
+        onChange={menuChangeHandler}
+        items={[
+          {
+            text: 'Click me',
+            value: 'menu-item',
+          },
+        ]}
+      />
+    );
+
+    fireEvent.click(getByText('Click me'));
+
+    expect(menuChangeHandler).toHaveBeenCalled();
+    expect(capturedEvent).toBeDefined();
+    expect(typeof capturedEvent?.stopPropagation).toBe('function');
+  });
+
+  test('Menu onChange provides event parameter that can be used to stop propagation', () => {
+    const parentClickHandler = jest.fn();
+    const menuChangeHandler = jest.fn((_item, e) => {
+      e.stopPropagation();
+      e.stopPropagation();
+    });
+
+    const { getByText } = render(
+      <div onClick={parentClickHandler}>
+        <Menu
+          onChange={menuChangeHandler}
+          items={[
+            {
+              text: 'Click me',
+              value: 'menu-item',
+            },
+          ]}
+        />
+      </div>
+    );
+
+    fireEvent.click(getByText('Click me'));
+
+    expect(menuChangeHandler).toHaveBeenCalled();
+    expect(parentClickHandler).not.toHaveBeenCalled();
+  });
+
+  test('Menu onChange event bubbles to parent when stopPropagation is not called', () => {
+    const parentClickHandler = jest.fn();
+    const menuChangeHandler = jest.fn();
+
+    const { getByText } = render(
+      <div onClick={parentClickHandler}>
+        <Menu
+          onChange={menuChangeHandler}
+          items={[
+            {
+              text: 'Click me',
+              value: 'menu-item',
+            },
+          ]}
+        />
+      </div>
+    );
+
+    fireEvent.click(getByText('Click me'));
+
+    expect(menuChangeHandler).toHaveBeenCalled();
+    expect(parentClickHandler).toHaveBeenCalled();
   });
 });

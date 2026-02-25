@@ -69,29 +69,12 @@
     width: 100%;
     transition: background-color $motion-duration-fast $motion-easing-easeout;
     z-index: 0;
-
-    .clickable-area {
-      bottom: 0;
-      border-radius: $border-radius-xl;
-      cursor: pointer;
-      left: 0;
-      pointer-events: all;
-      position: absolute;
-      right: 0;
-      top: 0;
-      z-index: 0;
-
-      &:focus,
-      &:focus-visible {
-        outline: none;
-      }
-    }
+    cursor: pointer;
 
     // By default we ensure the header content does not obscure the clickable area.
     .accordion-header-container {
       pointer-events: none;
       z-index: 1;
-
       // If there's custom content in the header, its interactive children should be clickable or selectable.
       a[href],
       area,
@@ -179,6 +162,8 @@
   .accordion-icon-button {
     transition: transform $motion-duration-fast;
     z-index: 1;
+    opacity: 1;
+    pointer-events: none;
 
     &.expanded-icon-button {
       transform: rotate(180deg);
@@ -222,28 +207,51 @@
       }
     }
   }
+
+  &.ai-agent {
+    &.accordion-border {
+      border-color: var(--accordion-ai-agent-border-color);
+    }
+
+    .accordion-body-container {
+      background: var(--accordion-ai-agent-body-background-color);
+    }
+
+    .accordion-body {
+      color: var(--accordion-ai-agent-gradient-body-text-color);
+
+      &.border-top {
+        border-top-color: var(--accordion-ai-agent-border-color);
+      }
+    }
+
+    .accordion-summary {
+      background: var(--accordion-ai-agent-summary-background-gradient);
+      color: var(--accordion-ai-agent-gradient-summary-text-color);
+
+      .badge {
+        color: var(--accordion-ai-agent-badge-color);
+      }
+
+      button {
+        background: var(--accordion-ai-agent-summary-button-background-color);
+      }
+
+      &:hover {
+        background: var(--accordion-ai-agent-summary-background-hover-gradient);
+        color: var(--accordion-ai-agent-summary-background-hover-text-color);
+      }
+    }
+  }
 }
 
 :global(.focus-visible) {
   .accordion-container {
     .accordion-summary {
-      .clickable-area {
-        &.focus-visible,
-        &:focus-visible {
-          box-shadow: inset var(--focus-visible-box-shadow);
-        }
-      }
-
       &.accordion-summary-expanded {
         border-radius: 0;
         border-top-left-radius: $border-radius-xl;
         border-top-right-radius: $border-radius-xl;
-
-        .clickable-area {
-          border-radius: 0;
-          border-top-left-radius: $border-radius-xl;
-          border-top-right-radius: $border-radius-xl;
-        }
       }
     }
   }

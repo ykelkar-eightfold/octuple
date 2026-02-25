@@ -6,6 +6,7 @@ import { OcBaseProps } from '../OcBase';
 import { Ref } from 'react';
 import { Value } from '../ConfigProvider';
 import { InputStatus } from '../../shared/utilities';
+import { DropdownProps } from '../Dropdown';
 
 export type SelectTabEvent<E = HTMLElement> =
   | React.MouseEvent<E>
@@ -28,6 +29,19 @@ export enum TabSize {
 }
 
 export type TabValue = string;
+
+export enum TabVariantType {
+  default = 'default',
+  dropdown = 'dropdown',
+}
+
+export interface TabDropdownItem {
+  value: TabValue;
+  label: string;
+  ariaLabel?: string;
+  disabled?: boolean;
+  icon?: IconName;
+};
 
 export enum TabVariant {
   default = 'default',
@@ -127,6 +141,11 @@ export interface TabsContextProps {
    * @default default
    */
   variant?: TabVariant;
+  /** 
+  Whether to enable arrow key navigation between tabs
+  @default true
+  */
+  enableArrowNav?: boolean;
 }
 
 export interface ITabsContext {
@@ -207,6 +226,36 @@ export interface ITabsContext {
    * @default default
    */
   variant?: TabVariant;
+  /**
+   * Function to register a tab element with the tabs context
+   * Used for keyboard navigation and focus management
+   */
+  registerTab?: (tabElement: HTMLElement | null, index: number) => void;
+  /** 
+  Function to register the tablist element with the tabs context
+  Used for keyboard navigation and focus management
+  */
+  registerTablist?: (tablistElement: HTMLElement | null) => void;
+  /** 
+  Function to handle keyboard events for tabs
+  Used for keyboard navigation
+  */
+  handleKeyDown?: (event: React.KeyboardEvent, tabIndex: number) => void;
+  /** 
+  Whether to enable arrow key navigation between tabs
+  @default true
+  */
+  enableArrowNav?: boolean;
+  /** 
+  Array of tab indexes that should be disabled
+  @default []
+  */
+  disabledTabIndexes?: number[];
+  /**  
+  The index of the currently focused tab.
+  This may be different from the active tab when navigating with keyboard.
+  */
+  focusedTabIndex?: number | null;
 }
 
 export interface TabProps extends OcBaseProps<HTMLButtonElement> {
@@ -255,6 +304,35 @@ export interface TabProps extends OcBaseProps<HTMLButtonElement> {
    * Active value of the tab.
    */
   value: TabValue;
+  /**
+   * The aria-controls of tabs
+   */
+  ariaControls?: string;
+  /** 
+  Whether to enable arrow key navigation between tabs
+  @default true
+  */
+  enableArrowNav?: boolean;
+  /*
+  The index of the tab in the tab list
+  Used for keyboard navigation
+  @internal
+  */
+  index?: number;
+  /**
+   * Variant of the tab
+   * @default 'default'
+   */
+  variant?: TabVariantType;
+  /**
+   * Array of dropdown menu items to display when variant is 'dropdown'
+   * Dropdown opens on hover
+   */
+  dropdownItems?: TabDropdownItem[];
+  /**
+   * Props for the dropdown component when variant is 'dropdown'
+   */
+  dropdownProps?: Omit<DropdownProps, 'overlay'>;
 }
 
 export interface StatProps extends Omit<TabProps, 'badgeContent'> {
@@ -310,6 +388,12 @@ export interface StatProps extends Omit<TabProps, 'badgeContent'> {
    * Theme of the stat tab.
    */
   theme?: StatThemeName;
+  /**
+   * Whether the stat tab is interactive.
+   * When false, renders as a div instead of a button and removes interactive attributes.
+   * @default true
+   */
+  interactive?: boolean;
 }
 
 export interface TabsProps extends Omit<OcBaseProps<HTMLElement>, 'onChange'> {
@@ -423,6 +507,22 @@ export interface TabsProps extends Omit<OcBaseProps<HTMLElement>, 'onChange'> {
    * @default default
    */
   variant?: TabVariant;
+  /**
+   * Whether to enable arrow key navigation between tabs
+   @default false
+   */
+  enableArrowNav?: boolean;
+  /**
+   * Array of tab indexess that should be disabled
+   @default []
+   */
+  disabledTabIndexes?: number[];
+  /**
+   * Whether the tabs are interactive.
+   * When false, renders as a non-interactive element, we remove the interactive role and attributes.
+   * @default true
+   */
+  interactive?: boolean;
 }
 
 export interface TabsTheme {

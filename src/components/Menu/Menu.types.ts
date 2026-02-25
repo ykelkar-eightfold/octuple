@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { ListProps } from '../List';
 import {
   MenuItemButtonProps,
@@ -49,7 +49,7 @@ export interface MenuProps
    * On change callback when menu item is clicked
    * @param value
    */
-  onChange?: (value: any) => void;
+  onChange?: (value: any, event?: React.MouseEvent) => void;
   /**
    * Callback when ok button is clicked
    */
@@ -74,6 +74,23 @@ export interface MenuProps
    * @default MenuVariant.neutral
    */
   variant?: MenuVariant;
+  /**
+   * The role attribute for menu item list item wrappers (li elements).
+   * Applied to all menu items if not specified on individual items.
+   * @default 'presentation'
+   */
+  menuItemRole?: string;
+  /**
+   * The role attribute for menu item button elements.
+   * Applied to all menu items if not specified on individual items.
+   * @default undefined (uses item's role prop)
+   */
+  menuButtonRole?: string;
+  /**
+   * Whether to inject the default role into the menu item button elements.
+   * @default true
+   */
+  menuButtonHasRole?: boolean;
 }
 
 export interface DropdownMenuProps extends MenuProps {
@@ -93,4 +110,16 @@ export interface DropdownMenuProps extends MenuProps {
    * @returns (event: React.KeyboardEvent) => void
    */
   referenceOnKeydown?: (event: React.KeyboardEvent) => void;
+  menuRenderer?: MenuRenderFunction;
+}
+export interface MenuRendererProps {
+  items: MenuItemTypes[];
+  size?: MenuSize;
+  variant?: MenuVariant;
+  children?: ReactNode;
+  [key: string]: any;
+}
+
+export interface MenuRenderFunction {
+  (props: MenuRendererProps): JSX.Element;
 }

@@ -36,6 +36,11 @@ const locale: Locale = {
   nextAriaLabel: 'Seuraava vuosi',
   superPrevAriaLabel: 'Edellinen vuosi',
   superNextAriaLabel: 'Seuraava vuosi',
+  arrowKeyNavigationText: 'Käytä nuolipainikkeita aikataulun navigointiin',
+  hourLabel: 'Tunnit',
+  minuteLabel: 'Minuutit',
+  secondLabel: 'Sekunnit',
+  ampmLabel: 'AM/PM',
 };
 
 export default locale;

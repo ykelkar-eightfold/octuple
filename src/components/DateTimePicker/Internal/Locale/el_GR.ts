@@ -33,6 +33,12 @@ const locale: Locale = {
   nextAriaLabel: 'Επόμενος αιώνας',
   superPrevAriaLabel: 'Προηγούμενος αιώνας',
   superNextAriaLabel: 'Επόμενος αιώνας',
+  arrowKeyNavigationText:
+    'Χρησιμοποιήστε τα πλήκτρα βέλους για πλοήγηση στον ημερολόγιο',
+  hourLabel: 'Ώρες',
+  minuteLabel: 'Λεπτά',
+  secondLabel: 'Δευτερόλεπτα',
+  ampmLabel: 'AM/PM',
 };
 
 export default locale;

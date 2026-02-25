@@ -59,6 +59,12 @@ type Locale = {
    */
   removeFileText?: string;
   /**
+   * The Upload remove file aria-label template.
+   * Use ${filename} as placeholder for the filename.
+   * @default 'Delete file ${filename}'
+   */
+  removeFileAriaLabelText?: string;
+  /**
    * The Upload 'Replace' string.
    */
   replaceFileText?: string;
@@ -314,6 +320,10 @@ export interface UploadProps<T = any> extends Pick<OcUploadProps, 'capture'> {
    * Upload URL
    */
   action?: Action;
+
+  'aria-describedby'?: string;
+
+  'aria-labelledby'?: string;
   /**
    * Hook executed before uploading.
    * Uploading will be stopped with false or a rejected Promise returned.

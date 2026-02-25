@@ -234,6 +234,12 @@ const SelectArgs: SelectProps = {
 
 Basic.args = {
   ...SelectArgs,
+  'aria-label': 'This is a select aria label',
+  menuProps: {
+    items: defaultOptions,
+    menuItemRole: 'option',
+    menuButtonHasRole: false,
+  },
 };
 
 Dynamic_Width.args = {

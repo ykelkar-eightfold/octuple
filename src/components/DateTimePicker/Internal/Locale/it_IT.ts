@@ -33,6 +33,11 @@ const locale: Locale = {
   nextAriaLabel: 'Anno successivo',
   superPrevAriaLabel: 'Anno precedente',
   superNextAriaLabel: 'Anno successivo',
+  arrowKeyNavigationText: 'Usa i tasti freccia per navigare nel calendario',
+  hourLabel: 'Ore',
+  minuteLabel: 'Minuti',
+  secondLabel: 'Secondi',
+  ampmLabel: 'AM/PM',
 };
 
 export default locale;

@@ -10,6 +10,7 @@ import {
   Shape,
   SizeContext,
   Size,
+  ThemeNames,
 } from '../../ConfigProvider';
 import ThemeContext, {
   ThemeContextProvider,
@@ -23,7 +24,7 @@ import {
   TextInputShape,
   TextInputSize,
   TextInputWidth,
-} from '../index';
+} from '../Input.types';
 import { FormItemInputContext } from '../../Form/Context';
 import { ValidateStatus } from '../../Form/Form.types';
 import { useDebounce } from '../../../hooks/useDebounce';
@@ -133,8 +134,8 @@ export const TextInput: FC<TextInputProps> = React.forwardRef(
     const ariaInvalid = ariaInvalidProp || mergedStatus === 'error';
     const ariaDescribedBy =
       mergedStatus === 'error'
-        ? ariaDescribedByProp || errorMessageId
-        : undefined;
+        ? [ariaDescribedByProp, errorMessageId].filter(Boolean).join(' ')
+        : ariaDescribedByProp;
 
     // Needed for form error scroll-into-view by id
     const mergedFormItemInput: boolean = isFormItemInput || formItemInput;
@@ -333,6 +334,7 @@ export const TextInput: FC<TextInputProps> = React.forwardRef(
       { ['in-form-item']: mergedFormItemInput },
       { [styles.isExpandable]: expandable },
       { [styles.expandRight]: expandable && expandRight },
+      { [styles.aiAgent]: mergedTheme === ThemeNames.AIAgent },
     ]);
 
     useEffect(() => {
@@ -465,32 +467,47 @@ export const TextInput: FC<TextInputProps> = React.forwardRef(
       [TextInputSize.Small, LabelSize.Small],
     ]);
 
-    const getIconButton = (): JSX.Element => (
-      <Button
-        allowDisabledFocus={iconButtonProps.allowDisabledFocus}
-        ariaLabel={iconButtonProps.ariaLabel}
-        checked={iconButtonProps.checked}
-        classNames={iconButtonClassNames}
-        disabled={iconButtonProps.disabled || mergedDisabled}
-        htmlType={iconButtonProps.htmlType}
-        iconProps={{
-          path: iconButtonProps.iconProps.path,
-        }}
-        id={iconButtonProps.id}
-        onClick={
-          !iconButtonProps.disabled && !mergedDisabled
-            ? iconButtonProps.onClick
-            : null
-        }
-        role={iconButtonProps.role}
-        shape={inputShapeToButtonShapeMap.get(shape)}
-        size={inputSizeToButtonSizeMap.get(mergedSize)}
-        tabIndex={iconButtonProps.tabIndex}
-        transparent
-        variant={ButtonVariant.SystemUI}
-        aria-hidden={iconButtonProps.ariaHidden}
-      />
-    );
+    const getIconButton = (): JSX.Element => {
+      // If no onClick is provided, the button is non-interactive and for a11y purposes
+      // SHOULD NOT be activatable/focusable (i.e. disabled="true", allowDisabledFocus="false"),
+      // SHOULD NOT have an aria-label, and SHOULD be hidden from AT (i.e. aria-hidden="true")
+      const isButtonInteractive = !!iconButtonProps.onClick;
+      const isButtonDisabled = isButtonInteractive
+        ? iconButtonProps.disabled || mergedDisabled
+        : true;
+      const allowDisabledFocus = isButtonInteractive
+        ? iconButtonProps.allowDisabledFocus
+        : false;
+      const ariaLabel = isButtonInteractive
+        ? iconButtonProps.ariaLabel
+        : undefined;
+      const ariaHidden = isButtonInteractive
+        ? iconButtonProps.ariaHidden
+        : true;
+
+      return (
+        <Button
+          allowDisabledFocus={allowDisabledFocus}
+          ariaLabel={ariaLabel}
+          aria-hidden={ariaHidden}
+          checked={iconButtonProps.checked}
+          classNames={iconButtonClassNames}
+          disabled={isButtonDisabled}
+          htmlType={iconButtonProps.htmlType}
+          iconProps={{
+            path: iconButtonProps.iconProps.path,
+          }}
+          id={iconButtonProps.id}
+          onClick={iconButtonProps.onClick}
+          role={iconButtonProps.role}
+          shape={inputShapeToButtonShapeMap.get(shape)}
+          size={inputSizeToButtonSizeMap.get(mergedSize)}
+          tabIndex={iconButtonProps.tabIndex}
+          transparent
+          variant={ButtonVariant.SystemUI}
+        />
+      );
+    };
 
     return (
       <ThemeContextProvider

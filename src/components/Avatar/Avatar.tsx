@@ -10,7 +10,7 @@ import {
   StatusItemIconAlign,
   StatusItemsPosition,
   StatusItemsProps,
-} from './';
+} from './Avatar.types';
 import { Icon } from '../Icon';
 import { Popup } from '../Popup';
 import { Tooltip } from '../Tooltip';
@@ -317,7 +317,7 @@ const AvatarIcon: FC<AvatarIconProps> = React.forwardRef(
       onMouseEnter,
       onMouseLeave,
       style,
-      tabIndex
+      tabIndex,
     },
     ref: Ref<HTMLDivElement>
   ) => {
@@ -491,7 +491,7 @@ export const Avatar: FC<AvatarProps> = React.forwardRef(
               onMouseLeave={onMouseLeave}
               src={src}
               style={calculatedOutline}
-              tabIndex={0}
+              tabIndex={tabIndex}
               width={size}
             />
             <AvatarStatusItems

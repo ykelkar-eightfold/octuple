@@ -14,6 +14,23 @@
     flex-direction: column;
   }
 
+  // Target first tab whether it's a direct child or wrapped in dropdown
+  > :first-child .tab,
+  >.tab:first-child {
+    padding-left: 0;
+
+    .tab-indicator {
+      width: calc(100% - $space-xl / 2);
+    }
+  }
+
+  // RTL first child handling - works for both direct and wrapped tabs
+  > :first-child .tab-rtl,
+  >.tab-rtl:first-child {
+    padding-left: $space-m;
+    padding-right: 0;
+  }
+
   .tab {
     align-items: center;
     border: none;
@@ -26,13 +43,6 @@
     padding: $space-s $space-m;
     position: relative;
     transition: background-color $motion-duration-fast $motion-easing-easeout 0s;
-
-    &:first-child {
-      padding-left: 0;
-      .tab-indicator {
-        width: calc(100% - calc(#{$space-xl / 2}));
-      }
-    }
 
     &:hover,
     &:focus {
@@ -59,11 +69,12 @@
     .tab-indicator {
       position: absolute;
       z-index: 1;
-      height: $space-xxxs;
+      height: var(--tab-indicator-height);
       bottom: 0;
       width: calc(100% - #{$space-xl});
       background: var(--tab-indicator-color);
       border-radius: $space-xxs $space-xxs 0 0;
+      forced-color-adjust: none; /* prevents system from overriding */
     }
 
     .label {
@@ -87,19 +98,24 @@
       }
     }
 
+    .dropdownChevron {
+      margin-left: $space-xs;
+      transition: transform $motion-duration-fast $motion-easing-easeout 0s;
+
+      &.dropdownChevronOpen {
+        transform: rotate(180deg);
+      }
+    }
+
     // Hides the browser default keyboard focus-visible styles.
     // Use the ConfigProvider instead.
     &:focus-visible {
       box-shadow: inset var(--focus-visible-box-shadow);
       outline: none;
+      @include focus-visible-forced-colors();
     }
 
     &-rtl {
-      &:first-child {
-        padding-left: $space-m;
-        padding-right: 0;
-      }
-
       .tab-indicator {
         border-radius: $space-xxs 0 0 $space-xxs;
       }
@@ -119,6 +135,11 @@
           margin-left: $space-xs;
           margin-right: unset;
         }
+      }
+
+      .dropdownChevron {
+        margin-left: unset;
+        margin-right: $space-xs;
       }
     }
   }
@@ -151,6 +172,14 @@
       background: var(--tab-inverse-pill-background);
     }
 
+    &.ai-agent {
+      --tab-label: var(--tab-ai-agent-label);
+      --tab-active-label: var(--tab-ai-agent-active-label);
+      --tab-active-background: var(--tab-ai-agent-active-background);
+      --tab-hover-label: var(--tab-ai-agent-hover-label);
+      background: var(--tab-ai-agent-background);
+    }
+
     .tab {
       border: var(--tab-pill-border);
       border-radius: var(--tab-pill-border-radius);
@@ -160,6 +189,13 @@
         border: var(--tab-pill-active-border);
         .badge {
           background-color: var(--primary-background1-color);
+        }
+      }
+
+      &.ai-agent {
+        &.active {
+          color: var(--tab-active-label);
+          background: var(--tab-active-background);
         }
       }
 
@@ -1165,6 +1201,7 @@
       &.focus-visible,
       &:focus-visible {
         box-shadow: var(--focus-visible-box-shadow);
+        @include focus-visible-forced-colors();
       }
     }
   }

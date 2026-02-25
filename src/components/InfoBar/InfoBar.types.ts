@@ -3,6 +3,7 @@ import { IconName } from '../Icon';
 import { ButtonProps } from '../Button';
 import { OcBaseProps } from '../OcBase';
 import React from 'react';
+import { IconProps } from '../Icon/Icon.types';
 
 export type CloseButtonProps = Omit<ButtonProps, 'onClick' | 'icon'>;
 
@@ -75,6 +76,11 @@ export interface InfoBarsProps
    */
   contentClassNames?: string;
   /**
+   * ID attribute for the content element.
+   * Useful for aria-describedby references.
+   */
+  contentId?: string;
+  /**
    * Custom classes of the content wrapper.
    */
   contentWrapperClassNames?: string;
@@ -92,6 +98,11 @@ export interface InfoBarsProps
    * Custom classes of the icon.
    */
   iconClassNames?: string;
+  /**
+   * Additional props to be passed to the Icon component.
+   * These props will be merged with the default icon props.
+   */
+  iconProps?: IconProps;
   /**
    * The InfoBar locale.
    * @default 'enUS'
@@ -121,4 +132,13 @@ export interface InfoBarsProps
    * @default InfoBarType.neutral
    */
   type?: InfoBarType;
+  /**
+   * Whether to move focus to the snackbar
+   * @default false
+   */
+  moveFocusToSnackbar?: boolean;
+  /**
+   * Ref for the close button element
+   */
+  closeButtonRef?: React.Ref<HTMLButtonElement>;
 }

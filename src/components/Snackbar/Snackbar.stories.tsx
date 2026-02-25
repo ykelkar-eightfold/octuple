@@ -57,6 +57,7 @@ export default {
         'violet',
         'violetRed',
         'grey',
+        'aiAgent',
       ],
       control: 'select',
     },
@@ -196,9 +197,6 @@ Closable.args = {
   ...snackArgs,
   id: undefined,
   closable: true,
-  closeButtonProps: {
-    ariaLabel: 'Close',
-  },
 };
 
 With_Action.args = {

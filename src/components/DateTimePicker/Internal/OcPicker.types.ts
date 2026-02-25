@@ -102,7 +102,7 @@ export type Locale = {
    */
   dateTimeFormat: string;
   /**
-   * The picker `Last year (Control + left)` text.
+   * The picker `Previous year (Control + left)` text.
    */
   previousYear: string;
   /**
@@ -110,7 +110,7 @@ export type Locale = {
    */
   nextYear: string;
   /**
-   * The picker `Last decade` text.
+   * The picker `Previous decade` text.
    */
   previousDecade: string;
   /**
@@ -118,7 +118,7 @@ export type Locale = {
    */
   nextDecade: string;
   /**
-   * The picker `Last century` text.
+   * The picker `Previous century` text.
    */
   previousCentury: string;
   /**
@@ -149,6 +149,26 @@ export type Locale = {
    * The super next aria label.
    */
   superNextAriaLabel?: string;
+  /**
+   * The arrow key navigation announcement text.
+   */
+  arrowKeyNavigationText?: string;
+  /**
+   * The time picker hour column label.
+   */
+  hourLabel?: string;
+  /**
+   * The time picker minute column label.
+   */
+  minuteLabel?: string;
+  /**
+   * The time picker second column label.
+   */
+  secondLabel?: string;
+  /**
+   * The time picker AM/PM column label.
+   */
+  ampmLabel?: string;
 };
 
 export type PartialMode =
@@ -334,6 +354,20 @@ export type PartialSharedProps<DateType> = {
    * The partial view date value.
    */
   viewDate: DateType;
+  /**
+   * The partial is trapped.
+   */
+  trap?: boolean;
+  /**
+   * The partial is visible.
+   */
+  visible?: boolean;
+  /**
+   * Announces arrow key navigation instructions when the picker opens.
+   * When true, uses default locale text. When string, uses custom message.
+   * @default false
+   */
+  announceArrowKeyNavigation?: boolean | string;
 };
 
 export type DisabledTimes = {
@@ -521,6 +555,24 @@ export type OcPickerPartialSharedProps<DateType> = {
    * Do not use in production.
    */
   onPickerValueChange?: (date: DateType) => void;
+  /**
+   * The partial is visible.
+   */
+  visible?: boolean;
+  /**
+   * The partial is trapped.
+   */
+  trap?: boolean;
+  /**
+   * Announces arrow key navigation instructions when the picker opens.
+   * When true, uses default locale text. When string, uses custom message.
+   * @default false
+   */
+  announceArrowKeyNavigation?: boolean | string;
+  /**
+   * The listbox ID for time picker accessibility.
+   */
+  listboxId?: string;
 };
 
 export type OcPickerPartialBaseProps<DateType> = {
@@ -622,6 +674,12 @@ export type OcPickerSharedProps<DateType> = {
    */
   autoFocus?: boolean;
   /**
+   * Announces arrow key navigation instructions when the picker opens.
+   * When true, uses default locale text. When string, uses custom message.
+   * @default false
+   */
+  announceArrowKeyNavigation?: boolean | string;
+  /**
    * Determines if the picker has a border style.
    */
   bordered?: boolean;
@@ -693,6 +751,11 @@ export type OcPickerSharedProps<DateType> = {
    * The picker id.
    */
   id?: string;
+  /**
+   * The hidden label text for accessibility.
+   * When provided, a visually hidden label will be associated with the input.
+   */
+  label?: string;
   /**
    * Make input readOnly to avoid popup keyboard in mobile.
    */
@@ -972,6 +1035,12 @@ export type OcRangePickerSharedProps<DateType> = {
    * Custom rendering function for date cells.
    */
   dateRender?: RangeDateRender<DateType>;
+  /**
+   * When enabled, if the user enters an invalid date, focus remains on the input
+   * allowing them to correct it. Only applies to date pickers without time.
+   * @default false
+   */
+  retainFocusOnInvalidDate?: boolean;
   /**
    * The default date.
    */

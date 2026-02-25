@@ -2,6 +2,7 @@
   @include reset-component();
 
   display: inline-block;
+  forced-color-adjust: none; /* prevents system from overriding */
 
   &-line {
     font-size: $text-font-size-2;
@@ -432,6 +433,34 @@
       .progress-icon {
         margin-top: 7px;
       }
+    }
+  }
+
+  &.aiAgent {
+    --progress-border-color: var(--progress-ai-agent-border-color);
+    --progress-complete-background-color: var(
+      --progress-ai-agent-complete-background-color
+    );
+    --progress-text-color: var(--progress-ai-agent-text-color);
+    --progress-incomplete-background-color: var(
+      --progress-ai-agent-incomplete-background-color
+    );
+
+    .progress-bg {
+      background: var(--progress-ai-agent-progress-background-color);
+    }
+
+    .progress-inner {
+      background: var(--progress-ai-agent-progress-inner-background-color);
+
+      &.bordered {
+        border-color: var(--progress-ai-agent-progress-inner-border-color);
+      }
+    }
+
+    .progress-text,
+    .extremity-label {
+      color: var(--progress-ai-agent-progress-circle-text-color);
     }
   }
 }

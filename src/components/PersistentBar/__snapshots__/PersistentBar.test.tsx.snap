@@ -88,7 +88,7 @@ exports[`PersistentBar PersistentBar is topBarPagination 1`] = `
           <button
             aria-current="true"
             aria-disabled="false"
-            aria-label="page 1"
+            aria-label="page 1 of 1"
             class="pagination-button active button button-neutral button-medium"
           >
             <span
@@ -119,7 +119,6 @@ exports[`PersistentBar PersistentBar is topBarWithText 1`] = `
         class="icon-button button button-system-ui button-medium round-shape icon-left"
       >
         <span
-          aria-hidden="false"
           class="icon icon-wrapper"
           role="presentation"
         >
@@ -148,23 +147,21 @@ exports[`PersistentBar PersistentBar is topBarWithText 1`] = `
         role="navigation"
       >
         <span />
-        <ul
+        <div
           class="pager page-tracker"
         >
-          <li>
-            <span>
-              1
-            </span>
-             
-            <span>
-              of
-            </span>
-             
-            <span>
-              1
-            </span>
-          </li>
-        </ul>
+          <span>
+            1
+          </span>
+           
+          <span>
+            of
+          </span>
+           
+          <span>
+            1
+          </span>
+        </div>
       </div>
     </div>
   </div>

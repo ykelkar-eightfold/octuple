@@ -413,6 +413,23 @@
     cursor: not-allowed;
   }
 
+  &.ai-agent {
+    color: var(--button-ai-agent-text-color);
+    border-width: var(--button-ai-agent-border-width);
+    border-style: var(--button-ai-agent-border-style);
+    border-color: var(--button-ai-agent-border-color);
+
+    &.focus-visible,
+    &:focus-visible {
+      outline: 2px solid var(--button-ai-agent-focus-visible-outline-color);
+      border-color: transparent;
+    }
+    &:disabled,
+    &.disabled {
+      opacity: $disabled-ai-agent-alpha-value;
+    }
+  }
+
   &.loading {
     opacity: 1;
     pointer-events: none;
@@ -507,6 +524,18 @@
   border-width: var(--button-primary-border-width);
   border-style: var(--button-primary-border-style);
   border-color: var(--button-primary-border-color);
+
+  &.ai-agent {
+    background: var(--button-ai-agent-primary-background-color);
+
+    &:hover:not([disabled]) {
+      background: var(--button-ai-agent-primary-hover-background-color);
+    }
+
+    &:active:not([disabled]) {
+      background: var(--button-ai-agent-primary-active-background-color);
+    }
+  }
 
   &.button-conic {
     border-color: transparent;
@@ -639,6 +668,19 @@
   border-width: var(--button-secondary-border-width);
   border-style: var(--button-secondary-border-style);
   border-color: var(--button-secondary-border-color);
+
+  &.ai-agent {
+    border-color: var(--button-ai-agent-secondary-border-color);
+
+    &:hover:not([disabled]) {
+      background: var(--button-ai-agent-secondary-hover-background-color);
+      border-color: var(--button-ai-agent-secondary-hover-border-color);
+    }
+
+    &:active:not([disabled]) {
+      background: var(--button-ai-agent-secondary-active-background-color);
+    }
+  }
 
   &.split-left {
     border-right-color: transparent;
@@ -1297,6 +1339,14 @@
   border-style: var(--button-default-border-style);
   border-color: var(--button-default-border-color);
 
+  &.ai-agent {
+    background: var(--button-ai-agent-default-background-color);
+
+    &:active:not([disabled]) {
+      background: var(--button-ai-agent-default-active-background-color);
+    }
+  }
+
   .loader-dot {
     background: var(--button-default-text-color);
   }
@@ -1415,6 +1465,9 @@
   --color: var(--button-neutral-text-color);
   color: var(--color);
   background: var(--bg);
+  border-width: var(--button-neutral-border-width);
+  border-style: var(--button-neutral-border-style);
+  border-color: var(--button-neutral-border-color);
 
   .loader-dot {
     background: var(--color);
@@ -1439,6 +1492,9 @@
   --bg: var(--button-system-ui-background-color);
   --color: var(--button-system-ui-text-color);
   color: var(--color);
+  border-width: var(--button-system-ui-border-width);
+  border-style: var(--button-system-ui-border-style);
+  border-color: var(--button-system-ui-border-color);
 
   .loader-dot {
     background: var(--color);
@@ -1717,6 +1773,9 @@
   --color: var(--button-two-state-text-color);
   background: var(--bg);
   color: var(--color);
+  border-width: var(--button-two-state-border-width);
+  border-style: var(--button-two-state-border-style);
+  border-color: var(--button-two-state-border-color);
 
   .loader {
     background: var(--bg);
@@ -2055,6 +2114,7 @@
     &.focus-visible,
     &:focus-visible {
       box-shadow: var(--focus-visible-box-shadow);
+      @include focus-visible-forced-colors();
 
       &.drop-shadow {
         box-shadow: var(--focus-visible-box-shadow), $shadow-object-s;

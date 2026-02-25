@@ -25,7 +25,6 @@ exports[`Select Renders empty options in multiple mode without crashing 1`] = `
                 aria-controls="list-"
                 aria-disabled="false"
                 aria-expanded="false"
-                aria-haspopup="true"
                 aria-invalid="false"
                 class="select-input input-medium with-icon-button input-stretch right-icon clear-disabled clear-not-visible"
                 id="input-"
@@ -52,7 +51,6 @@ exports[`Select Renders empty options in multiple mode without crashing 1`] = `
                   type="button"
                 >
                   <span
-                    aria-hidden="false"
                     class="icon icon-wrapper"
                     role="presentation"
                   >
@@ -103,7 +101,6 @@ exports[`Select Renders empty options in single mode without crashing 1`] = `
                 aria-controls="list-"
                 aria-disabled="false"
                 aria-expanded="false"
-                aria-haspopup="true"
                 aria-invalid="false"
                 class="select-input input-medium with-icon-button input-stretch right-icon clear-disabled clear-not-visible"
                 id="input-"
@@ -130,7 +127,6 @@ exports[`Select Renders empty options in single mode without crashing 1`] = `
                   type="button"
                 >
                   <span
-                    aria-hidden="false"
                     class="icon icon-wrapper"
                     role="presentation"
                   >
@@ -181,7 +177,6 @@ exports[`Select Renders null options in multiple mode without crashing 1`] = `
                 aria-controls="list-"
                 aria-disabled="false"
                 aria-expanded="false"
-                aria-haspopup="true"
                 aria-invalid="false"
                 class="select-input input-medium with-icon-button input-stretch right-icon clear-disabled clear-not-visible"
                 id="input-"
@@ -208,7 +203,6 @@ exports[`Select Renders null options in multiple mode without crashing 1`] = `
                   type="button"
                 >
                   <span
-                    aria-hidden="false"
                     class="icon icon-wrapper"
                     role="presentation"
                   >
@@ -259,7 +253,6 @@ exports[`Select Renders null options in single mode without crashing 1`] = `
                 aria-controls="list-"
                 aria-disabled="false"
                 aria-expanded="false"
-                aria-haspopup="true"
                 aria-invalid="false"
                 class="select-input input-medium with-icon-button input-stretch right-icon clear-disabled clear-not-visible"
                 id="input-"
@@ -286,7 +279,6 @@ exports[`Select Renders null options in single mode without crashing 1`] = `
                   type="button"
                 >
                   <span
-                    aria-hidden="false"
                     class="icon icon-wrapper"
                     role="presentation"
                   >
@@ -337,7 +329,6 @@ exports[`Select Renders with default value 1`] = `
                 aria-controls="list-"
                 aria-disabled="false"
                 aria-expanded="false"
-                aria-haspopup="true"
                 aria-invalid="false"
                 class="select-input input-medium with-icon-button input-stretch right-icon clear-disabled clear-not-visible"
                 id="input-"
@@ -364,7 +355,6 @@ exports[`Select Renders with default value 1`] = `
                   type="button"
                 >
                   <span
-                    aria-hidden="false"
                     class="icon icon-wrapper"
                     role="presentation"
                   >
@@ -414,7 +404,6 @@ exports[`Select Renders with default values when multiple 1`] = `
           class="close-button button button-default button-small pill-shape icon-left"
         >
           <span
-            aria-hidden="false"
             class="icon icon-wrapper"
             role="presentation"
           >
@@ -447,7 +436,6 @@ exports[`Select Renders with default values when multiple 1`] = `
           class="close-button button button-default button-small pill-shape icon-left"
         >
           <span
-            aria-hidden="false"
             class="icon icon-wrapper"
             role="presentation"
           >
@@ -485,7 +473,6 @@ exports[`Select Renders with default values when multiple 1`] = `
                 aria-controls="list-"
                 aria-disabled="false"
                 aria-expanded="false"
-                aria-haspopup="true"
                 aria-invalid="false"
                 class="select-input input-medium with-icon-button input-stretch right-icon clear-disabled clear-not-visible"
                 id="input-"
@@ -512,7 +499,6 @@ exports[`Select Renders with default values when multiple 1`] = `
                   type="button"
                 >
                   <span
-                    aria-hidden="false"
                     class="icon icon-wrapper"
                     role="presentation"
                   >
@@ -563,7 +549,6 @@ exports[`Select Renders without crashing 1`] = `
                 aria-controls="list-"
                 aria-disabled="false"
                 aria-expanded="false"
-                aria-haspopup="true"
                 aria-invalid="false"
                 class="select-input input-medium with-icon-button input-stretch right-icon clear-disabled clear-not-visible"
                 id="input-"
@@ -590,7 +575,6 @@ exports[`Select Renders without crashing 1`] = `
                   type="button"
                 >
                   <span
-                    aria-hidden="false"
                     class="icon icon-wrapper"
                     role="presentation"
                   >
@@ -640,7 +624,6 @@ exports[`Select Select is large 1`] = `
               aria-controls="list-"
               aria-disabled="false"
               aria-expanded="false"
-              aria-haspopup="true"
               aria-invalid="false"
               class="select-input input-large with-icon-button input-stretch right-icon clear-disabled clear-not-visible"
               id="input-"
@@ -667,7 +650,6 @@ exports[`Select Select is large 1`] = `
                 type="button"
               >
                 <span
-                  aria-hidden="false"
                   class="icon icon-wrapper"
                   role="presentation"
                 >
@@ -716,7 +698,6 @@ exports[`Select Select is medium 1`] = `
               aria-controls="list-"
               aria-disabled="false"
               aria-expanded="false"
-              aria-haspopup="true"
               aria-invalid="false"
               class="select-input input-medium with-icon-button input-stretch right-icon clear-disabled clear-not-visible"
               id="input-"
@@ -743,7 +724,6 @@ exports[`Select Select is medium 1`] = `
                 type="button"
               >
                 <span
-                  aria-hidden="false"
                   class="icon icon-wrapper"
                   role="presentation"
                 >
@@ -792,7 +772,6 @@ exports[`Select Select is pill shaped 1`] = `
               aria-controls="list-"
               aria-disabled="false"
               aria-expanded="false"
-              aria-haspopup="true"
               aria-invalid="false"
               class="select-input input-medium pill-shape pill-shape-with-icon-button input-stretch right-icon clear-disabled clear-not-visible"
               id="input-"
@@ -819,7 +798,6 @@ exports[`Select Select is pill shaped 1`] = `
                 type="button"
               >
                 <span
-                  aria-hidden="false"
                   class="icon icon-wrapper"
                   role="presentation"
                 >
@@ -868,7 +846,6 @@ exports[`Select Select is rectangle shaped 1`] = `
               aria-controls="list-"
               aria-disabled="false"
               aria-expanded="false"
-              aria-haspopup="true"
               aria-invalid="false"
               class="select-input input-medium with-icon-button input-stretch right-icon clear-disabled clear-not-visible"
               id="input-"
@@ -895,7 +872,6 @@ exports[`Select Select is rectangle shaped 1`] = `
                 type="button"
               >
                 <span
-                  aria-hidden="false"
                   class="icon icon-wrapper"
                   role="presentation"
                 >
@@ -944,7 +920,6 @@ exports[`Select Select is small 1`] = `
               aria-controls="list-"
               aria-disabled="false"
               aria-expanded="false"
-              aria-haspopup="true"
               aria-invalid="false"
               class="select-input input-small with-icon-button input-stretch right-icon clear-disabled clear-not-visible"
               id="input-"
@@ -971,7 +946,6 @@ exports[`Select Select is small 1`] = `
                 type="button"
               >
                 <span
-                  aria-hidden="false"
                   class="icon icon-wrapper"
                   role="presentation"
                 >
@@ -1020,7 +994,6 @@ exports[`Select Select is underline shaped 1`] = `
               aria-controls="list-"
               aria-disabled="false"
               aria-expanded="false"
-              aria-haspopup="true"
               aria-invalid="false"
               class="select-input input-medium with-icon-button underline input-stretch right-icon clear-disabled clear-not-visible"
               id="input-"
@@ -1047,7 +1020,6 @@ exports[`Select Select is underline shaped 1`] = `
                 type="button"
               >
                 <span
-                  aria-hidden="false"
                   class="icon icon-wrapper"
                   role="presentation"
                 >
