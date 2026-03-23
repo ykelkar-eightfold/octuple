@@ -52,7 +52,6 @@ exports[`Select Renders empty options in multiple mode without crashing 1`] = `
                 >
                   <span
                     class="icon icon-wrapper"
-                    role="presentation"
                   >
                     <svg
                       role="presentation"
@@ -128,7 +127,6 @@ exports[`Select Renders empty options in single mode without crashing 1`] = `
                 >
                   <span
                     class="icon icon-wrapper"
-                    role="presentation"
                   >
                     <svg
                       role="presentation"
@@ -204,7 +202,6 @@ exports[`Select Renders null options in multiple mode without crashing 1`] = `
                 >
                   <span
                     class="icon icon-wrapper"
-                    role="presentation"
                   >
                     <svg
                       role="presentation"
@@ -280,7 +277,6 @@ exports[`Select Renders null options in single mode without crashing 1`] = `
                 >
                   <span
                     class="icon icon-wrapper"
-                    role="presentation"
                   >
                     <svg
                       role="presentation"
@@ -356,7 +352,6 @@ exports[`Select Renders with default value 1`] = `
                 >
                   <span
                     class="icon icon-wrapper"
-                    role="presentation"
                   >
                     <svg
                       role="presentation"
@@ -392,7 +387,7 @@ exports[`Select Renders with default values when multiple 1`] = `
         class="tag-pills multi-select-pill blue-green medium"
         id="selectPillOption 2-1"
         style="visibility: hidden;"
-        tabindex="0"
+        tabindex="-1"
       >
         <span
           class="label medium"
@@ -401,11 +396,11 @@ exports[`Select Renders with default values when multiple 1`] = `
         </span>
         <button
           aria-disabled="false"
+          aria-label="Remove Option 2"
           class="close-button button button-default button-small pill-shape icon-left"
         >
           <span
             class="icon icon-wrapper"
-            role="presentation"
           >
             <svg
               role="presentation"
@@ -424,7 +419,7 @@ exports[`Select Renders with default values when multiple 1`] = `
         class="tag-pills multi-select-pill blue-green medium"
         id="selectPillOption 3-2"
         style="visibility: hidden;"
-        tabindex="0"
+        tabindex="-1"
       >
         <span
           class="label medium"
@@ -433,11 +428,11 @@ exports[`Select Renders with default values when multiple 1`] = `
         </span>
         <button
           aria-disabled="false"
+          aria-label="Remove Option 3"
           class="close-button button button-default button-small pill-shape icon-left"
         >
           <span
             class="icon icon-wrapper"
-            role="presentation"
           >
             <svg
               role="presentation"
@@ -500,7 +495,6 @@ exports[`Select Renders with default values when multiple 1`] = `
                 >
                   <span
                     class="icon icon-wrapper"
-                    role="presentation"
                   >
                     <svg
                       role="presentation"
@@ -576,7 +570,6 @@ exports[`Select Renders without crashing 1`] = `
                 >
                   <span
                     class="icon icon-wrapper"
-                    role="presentation"
                   >
                     <svg
                       role="presentation"
@@ -651,7 +644,6 @@ exports[`Select Select is large 1`] = `
               >
                 <span
                   class="icon icon-wrapper"
-                  role="presentation"
                 >
                   <svg
                     role="presentation"
@@ -725,7 +717,6 @@ exports[`Select Select is medium 1`] = `
               >
                 <span
                   class="icon icon-wrapper"
-                  role="presentation"
                 >
                   <svg
                     role="presentation"
@@ -799,7 +790,6 @@ exports[`Select Select is pill shaped 1`] = `
               >
                 <span
                   class="icon icon-wrapper"
-                  role="presentation"
                 >
                   <svg
                     role="presentation"
@@ -873,7 +863,6 @@ exports[`Select Select is rectangle shaped 1`] = `
               >
                 <span
                   class="icon icon-wrapper"
-                  role="presentation"
                 >
                   <svg
                     role="presentation"
@@ -947,7 +936,6 @@ exports[`Select Select is small 1`] = `
               >
                 <span
                   class="icon icon-wrapper"
-                  role="presentation"
                 >
                   <svg
                     role="presentation"
@@ -1021,7 +1009,6 @@ exports[`Select Select is underline shaped 1`] = `
               >
                 <span
                   class="icon icon-wrapper"
-                  role="presentation"
                 >
                   <svg
                     role="presentation"
