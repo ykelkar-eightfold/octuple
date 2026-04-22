@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.57.1](https://github.com/EightfoldAI/octuple/compare/v2.57.0...v2.57.1) (2026-04-20)
+
+### Bug Fixes
+
+- **Dropdown:** updated structure for dropdown menu list item ([#1113](https://github.com/EightfoldAI/octuple/issues/1113)) ([1943b74](https://github.com/EightfoldAI/octuple/commits/1943b7497304ad354750954bfd60f6d16a28baca))
+- **RangePicker:** Updated aria-describedby directly on input elements ([#1121](https://github.com/EightfoldAI/octuple/issues/1121)) ([81b3d62](https://github.com/EightfoldAI/octuple/commits/81b3d629d248ccebf132ba69c677b210c63ca2c9))
+- **Select:** accessibility fix for aria live announcement and aria property ([#1120](https://github.com/EightfoldAI/octuple/issues/1120)) ([f060588](https://github.com/EightfoldAI/octuple/commits/f06058826e7c2927426f1b5c5e3119254527317f))
+
+## [2.57.0](https://github.com/EightfoldAI/octuple/compare/v2.56.8...v2.57.0) (2026-04-09)
+
+### Features
+
+- **Accordion:** add heading tag ([#1117](https://github.com/EightfoldAI/octuple/issues/1117)) ([524b464](https://github.com/EightfoldAI/octuple/commits/524b464f7f4616b86f644d64fcbbb7f28cc3aea2))
+
+### Bug Fixes
+
+- **Select:** updated aria-live property for results announcement ([#1114](https://github.com/EightfoldAI/octuple/issues/1114)) ([8507930](https://github.com/EightfoldAI/octuple/commits/850793020be6a1f13ca4750679b1182d9e9048c2))
+- **Table:** add scope row and col accessibility attributes ([#1111](https://github.com/EightfoldAI/octuple/issues/1111)) ([9d2a198](https://github.com/EightfoldAI/octuple/commits/9d2a198b6a62916c932a8c149b206dc2dbbad0bd))
+- **TimePicker:** fixed timePicker announcement ([#1119](https://github.com/EightfoldAI/octuple/issues/1119)) ([a90a49b](https://github.com/EightfoldAI/octuple/commits/a90a49ba96f2c375b24cebbbab14d93a265babb5))
+
 ### [2.56.8](https://github.com/EightfoldAI/octuple/compare/v2.56.7...v2.56.8) (2026-03-31)
 
 ### Bug Fixes

@@ -5,6 +5,7 @@ import React, {
   useContext,
   useEffect,
   useLayoutEffect,
+  useMemo,
   useRef,
   useState,
   Ref,
@@ -38,6 +39,8 @@ import {
   SelectShape,
   SelectSize,
 } from './Select.types';
+import { useLocaleReceiver } from '../LocaleProvider/LocaleReceiver';
+import enUS from './Locale/en_US';
 import { Spinner, SpinnerSize } from '../Spinner';
 import { Breakpoints, useMatchMedia } from '../../hooks/useMatchMedia';
 import { Tooltip, TooltipTheme } from '../Tooltip';
@@ -122,6 +125,8 @@ export const Select: FC<SelectProps> = React.forwardRef(
 
     const htmlDir: string = useCanvasDirection();
 
+    const [selectLocale] = useLocaleReceiver('Select', enUS);
+
     const [dropdownWidth, setDropdownWidth] = useState(0);
     const [selectWidth, setSelectWidth] = useState(0);
 
@@ -141,6 +146,7 @@ export const Select: FC<SelectProps> = React.forwardRef(
       !filterable && !multiple
     );
     const [dropdownVisible, setDropdownVisibility] = useState<boolean>(false);
+
     const [options, setOptions] = useState<SelectOption[]>(
       (_options || []).map((option: SelectOption, index: number) => ({
         selected: false,
@@ -330,6 +336,34 @@ export const Select: FC<SelectProps> = React.forwardRef(
         setInitialFocus(initialFocus);
       }
     }, [filterable, initialFocus]);
+
+    // Derive the live region message, memoized to prevent spurious
+    const lastLiveRegionMessageRef = useRef<string>('');
+    const liveRegionMessage = useMemo<string>(() => {
+      if (!dropdownVisible) {
+        return lastLiveRegionMessageRef.current;
+      }
+
+      const visibleOptionsCount: number = (options || []).filter(
+        (opt: SelectOption) => !opt.hideOption
+      ).length;
+
+      let message: string;
+      if (visibleOptionsCount > 0) {
+        const countLabel =
+          visibleOptionsCount !== 1
+            ? selectLocale?.lang?.resultsAvailableText
+            : selectLocale?.lang?.resultAvailableText;
+        message = searchQuery
+          ? `${searchQuery},${visibleOptionsCount} ${countLabel}`
+          : `${visibleOptionsCount} ${countLabel}`;
+      } else {
+        const noResultsText = selectLocale?.lang?.noResultsFoundText;
+        message = searchQuery ? `${noResultsText} ${searchQuery}` : '';
+      }
+      lastLiveRegionMessageRef.current = message;
+      return message;
+    }, [dropdownVisible, options, searchQuery, selectLocale]);
 
     const toggleOption = (option: SelectOption): void => {
       setSearchQuery('');
@@ -726,6 +760,7 @@ export const Select: FC<SelectProps> = React.forwardRef(
       if (filteredOptions.length > 0) {
         return (
           <Menu
+            aria-label={ariaLabel || undefined}
             id={selectMenuId?.current}
             {...restMenuProps}
             itemProps={menuItemRole ? { role: menuItemRole } : undefined}
@@ -735,6 +770,15 @@ export const Select: FC<SelectProps> = React.forwardRef(
                 (opt: SelectOption) => opt.value === value
               );
               currentlySelectedOption.current = option;
+              // Imperatively update aria-activedescendant so screen readers
+              // announce the selected option even when the selection is driven
+              // by a pointer event (which does not fire a focusin event).
+              if (option?.id) {
+                inputRef.current?.setAttribute(
+                  'aria-activedescendant',
+                  option.id
+                );
+              }
               toggleOption(option);
             }}
             role="listbox"
@@ -918,6 +962,33 @@ export const Select: FC<SelectProps> = React.forwardRef(
       updateLayout();
     }, [dropdownWidth, selectWidth]);
 
+    useEffect(() => {
+      const input = inputRef.current;
+      if (!dropdownVisible) {
+        input?.removeAttribute('aria-activedescendant');
+      }
+
+      const selected = (options || []).find(
+        (opt: SelectOption) => opt.selected && !opt.hideOption
+      );
+      if (selected?.id) {
+        input?.setAttribute('aria-activedescendant', selected.id);
+      }
+
+      const handleFocusIn = (event: FocusEvent): void => {
+        const target = event.target as HTMLElement;
+        if (target?.id && target.getAttribute('role') === 'option') {
+          input?.setAttribute('aria-activedescendant', target.id);
+        }
+      };
+
+      document.addEventListener('focusin', handleFocusIn);
+      return () => {
+        document.removeEventListener('focusin', handleFocusIn);
+      };
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [dropdownVisible]);
+
     return (
       <ResizeObserver onResize={updateLayout}>
         <ThemeContextProvider
@@ -933,6 +1004,15 @@ export const Select: FC<SelectProps> = React.forwardRef(
             id={id}
             style={style}
           >
+            {/* Visually-hidden live region: announces result counts and "no results" to screen readers */}
+            <div
+              aria-atomic="true"
+              aria-live="polite"
+              className={styles.selectLiveRegion}
+              role="status"
+            >
+              {liveRegionMessage}
+            </div>
             {/* When Dropdown is hidden, place Pills outside the reference element */}
             {!dropdownVisible && showPills() ? getPills() : null}
             <Dropdown
@@ -962,7 +1042,6 @@ export const Select: FC<SelectProps> = React.forwardRef(
                 {dropdownVisible && showPills() ? getPills() : null}
                 <TextInput
                   ref={inputRef}
-                  aria-activedescendant={currentlySelectedOption.current?.id}
                   aria-controls={selectMenuId?.current}
                   aria-expanded={dropdownVisible}
                   configContextProps={configContextProps}
