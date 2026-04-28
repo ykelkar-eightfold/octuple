@@ -888,7 +888,7 @@
 
   .selector {
     &.disabled {
-      input {
+      input[disabled] {
         &:checked {
           &:focus-visible + label {
             .checkmark {

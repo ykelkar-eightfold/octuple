@@ -158,6 +158,27 @@ const CheckBox_Long_text_Story: ComponentStory<typeof CheckBox> = (args) => {
   );
 };
 
+const Check_Box_Allow_Disabled_Focus_Story: ComponentStory<typeof CheckBox> = (
+  args
+) => (
+  <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+    <CheckBox
+      {...args}
+      allowDisabledFocus
+      disabled
+      label="Keyboard-accessible disabled (allowDisabledFocus)"
+      id="allow-disabled-focus-on"
+    />
+    <CheckBox
+      {...args}
+      allowDisabledFocus={false}
+      disabled
+      label="Not keyboard-accessible disabled"
+      id="allow-disabled-focus-off"
+    />
+  </div>
+);
+
 const CheckBoxGroup_Story: ComponentStory<typeof CheckBoxGroup> = (args) => {
   const [selected, setSelected] = useState<CheckboxValueType[]>([]);
   return (
@@ -175,6 +196,8 @@ const CheckBoxGroup_Story: ComponentStory<typeof CheckBoxGroup> = (args) => {
 export const Check_Box = CheckBox_Story.bind({});
 export const Check_Box_Pill = CheckBox_Story.bind({});
 export const Check_Box_Long_Text = CheckBox_Long_text_Story.bind({});
+export const Check_Box_Allow_Disabled_Focus =
+  Check_Box_Allow_Disabled_Focus_Story.bind({});
 export const Check_Box_Group = CheckBoxGroup_Story.bind({});
 
 // Storybook 6.5 using Webpack >= 5.76.0 automatically alphabetizes exports,
@@ -184,6 +207,7 @@ export const __namedExportsOrder = [
   'Check_Box',
   'Check_Box_Pill',
   'Check_Box_Long_Text',
+  'Check_Box_Allow_Disabled_Focus',
   'Check_Box_Group',
 ];
 
@@ -228,6 +252,11 @@ Check_Box_Long_Text.args = {
   ...checkBoxArgs,
   label:
     "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
+};
+
+Check_Box_Allow_Disabled_Focus.args = {
+  ...checkBoxArgs,
+  checked: false,
 };
 
 Check_Box_Group.args = {
